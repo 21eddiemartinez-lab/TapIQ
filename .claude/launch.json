@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "TapIQ-v2",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["-e", "require('http').createServer((req,res)=>{const fs=require('fs'),path=require('path');let f=path.join('C:/Users/21edd/.claude/TapIQ-v2',req.url==='/'?'index.html':req.url);fs.readFile(f,(e,d)=>{if(e){res.writeHead(404);res.end('Not found');}else{const ext=path.extname(f);const m={'html':'text/html','css':'text/css','js':'text/javascript','svg':'image/svg+xml'};res.writeHead(200,{'Content-Type':m[ext.slice(1)]||'text/plain'});res.end(d);}});}).listen(5174,()=>console.log('Server running on port 5174'))"],
+      "port": 5174
+    }
+  ]
+}
