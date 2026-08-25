@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TapIQ Water Analysis Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       TapIQ — Water Analysis Report (example deliverable)
+       Deliberate single "paper" theme: a document, not an app.
+       Type: Plus Jakarta Sans (text) + IBM Plex Mono (measured data)
+    ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --ink:      #0B1B34;
+      --ink-soft: #33465F;
+      --muted:    #64748B;
+      --faint:    #94A3B8;
+      --line:     #E2E8F0;
+      --line-2:   #EEF2F7;
+      --paper:    #E8EEF5;   /* page ground */
+      --card:     #FFFFFF;
+      --wash:     #F5F9FD;   /* subtle inset panels */
+
+      --sky:      #0EA5E9;
+      --sky-dk:   #0369A1;
+      --navy:     #04122A;
+      --orange:   #F97316;
+
+      /* semantic status (separate from brand accent) */
+      --good:     #15803D;  --good-bg:  #DCFCE7;  --good-line:#A7F3C4;
+      --watch:    #B45309;  --watch-bg: #FEF3D6;  --watch-line:#FBD98A;
+      --action:   #B91C1C;  --action-bg:#FDE4E4;  --action-line:#F7B4B4;
+
+      --f: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --mono: 'IBM Plex Mono', ui-monospace, monospace;
+      --r: 14px; --r-sm: 9px;
+      --sh: 0 1px 2px rgba(11,27,52,.04), 0 12px 34px rgba(11,27,52,.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 60px;
+    }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    /* ── Demo control bar (not part of the printed report) ─────────── */
+    .demo-bar {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(4,18,42,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .demo-inner {
+      max-width: 900px; margin: 0 auto;
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 24px; flex-wrap: wrap;
+    }
+    .demo-brand {
+      display: flex; align-items: center; gap: 9px;
+      font-weight: 800; font-size: 1.05rem; color: #fff; letter-spacing: -.02em;
+      margin-right: auto;
+    }
+    .demo-brand span { color: var(--sky); }
+    .demo-mark {
+      width: 26px; height: 26px; border-radius: 8px;
+      display: grid; place-items: center;
+      background: linear-gradient(150deg, var(--sky), var(--sky-dk));
+      box-shadow: 0 2px 8px rgba(14,165,233,.4);
+    }
+    .demo-tag {
+      font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.45); align-self: center;
+    }
+    .tabs { display: flex; gap: 4px; background: rgba(255,255,255,.06); padding: 4px; border-radius: 99px; }
+    .tab {
+      border: none; cursor: pointer; font-family: var(--f);
+      font-size: .8rem; font-weight: 600; color: rgba(255,255,255,.6);
+      padding: 8px 15px; border-radius: 99px; transition: all .18s; white-space: nowrap;
+    }
+    .tab:hover { color: #fff; }
+    .tab.active { background: var(--sky); color: #fff; box-shadow: 0 2px 10px rgba(14,165,233,.45); }
+    .print-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.04);
+      color: #fff; cursor: pointer; font-family: var(--f);
+      font-size: .8rem; font-weight: 600; padding: 8px 15px; border-radius: 99px;
+      transition: background .18s;
+    }
+    .print-btn:hover { background: rgba(255,255,255,.12); }
+
+    /* ── Document shell ───────────────────────────────────────────── */
+    .doc {
+      max-width: 900px; margin: 32px auto; background: var(--card);
+      border-radius: var(--r); box-shadow: var(--sh);
+      overflow: hidden;
+      animation: rise .5s cubic-bezier(.2,.7,.3,1) both;
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+    /* Masthead */
+    .mast {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 34px 44px 26px;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(120% 140% at 100% 0%, rgba(14,165,233,.07) 0%, transparent 45%);
+    }
+    .mast-logo { display: flex; align-items: center; gap: 11px; }
+    .mast-mark {
+      width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
+      background: linear-gradient(150deg, var(--sky), var(--sky-dk));
+      box-shadow: 0 4px 14px rgba(14,165,233,.32);
+    }
+    .mast-name { font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; }
+    .mast-name span { color: var(--sky); }
+    .mast-kicker { font-size: .72rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; margin-top: 1px; }
+    .mast-meta { text-align: right; font-size: .78rem; color: var(--muted); line-height: 1.7; }
+    .mast-meta b { color: var(--ink); font-weight: 700; }
+
+    .pad { padding: 30px 44px; }
+    .rule { height: 1px; background: var(--line-2); margin: 4px 44px; }
+
+    /* Title block */
+    .titleblock { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+    .doc-title { font-size: 1.9rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; text-wrap: balance; }
+    .doc-sub { color: var(--muted); font-size: .9rem; margin-top: 5px; }
+    .tier-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .74rem; font-weight: 700; letter-spacing: .03em;
+      padding: 7px 14px; border-radius: 99px;
+      background: var(--navy); color: #fff; white-space: nowrap;
+    }
+    .tier-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sky); }
+
+    /* Customer meta grid */
+    .meta-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      background: var(--line); border: 1px solid var(--line);
+      border-radius: var(--r-sm); overflow: hidden; margin-top: 24px;
+    }
+    .meta-cell { background: var(--card); padding: 14px 16px; }
+    .meta-cell .k { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+    .meta-cell .v { font-size: .9rem; font-weight: 600; color: var(--ink); margin-top: 3px; }
+
+    /* Verdict banner */
+    .verdict {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
+      padding: 24px 26px; border-radius: var(--r); position: relative; overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .verdict::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+    .verdict.good::before   { background: var(--good); }
+    .verdict.watch::before  { background: var(--watch); }
+    .verdict.action::before { background: var(--action); }
+    .verdict.good   { background: linear-gradient(90deg, var(--good-bg), transparent 70%); }
+    .verdict.watch  { background: linear-gradient(90deg, var(--watch-bg), transparent 70%); }
+    .verdict.action { background: linear-gradient(90deg, var(--action-bg), transparent 70%); }
+    .v-score {
+      width: 92px; height: 92px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--card); border: 3px solid; flex-shrink: 0; text-align: center;
+    }
+    .verdict.good   .v-score { border-color: var(--good-line); }
+    .verdict.watch  .v-score { border-color: var(--watch-line); }
+    .verdict.action .v-score { border-color: var(--action-line); }
+    .v-score .num { font-size: 1.9rem; font-weight: 800; line-height: 1; font-family: var(--mono); }
+    .v-score .of  { font-size: .6rem; color: var(--muted); font-weight: 600; letter-spacing: .06em; margin-top: 2px; }
+    .verdict.good   .v-score .num { color: var(--good); }
+    .verdict.watch  .v-score .num { color: var(--watch); }
+    .verdict.action .v-score .num { color: var(--action); }
+    .v-head { font-size: 1.18rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 5px; }
+    .v-body { font-size: .9rem; color: var(--ink-soft); max-width: 52ch; }
+    .v-action {
+      text-align: right; flex-shrink: 0;
+    }
+    .v-action .lbl { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    .v-action .pill {
+      display: inline-block; font-weight: 700; font-size: .9rem; color: var(--navy);
+      background: #fff; border: 1.5px solid var(--sky); padding: 8px 14px; border-radius: 99px;
+    }
+
+    /* Section heading */
+    .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .sec-num {
+      font-family: var(--mono); font-size: .72rem; font-weight: 600; color: var(--sky);
+      border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px;
+    }
+    .sec-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -.01em; }
+    .sec-desc { font-size: .82rem; color: var(--muted); margin: -10px 0 20px; }
+
+    /* Glance tiles */
+    .glance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .g-tile { background: var(--wash); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 16px; }
+    .g-tile .k { font-size: .64rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--faint); }
+    .g-tile .v { font-size: 1.02rem; font-weight: 800; margin-top: 6px; letter-spacing: -.01em; }
+    .g-tile .v.mono { font-size: 1.15rem; }
+
+    /* Measurement rows */
+    .m-row {
+      display: grid; grid-template-columns: 1.6fr 1fr 2fr auto; gap: 18px; align-items: center;
+      padding: 15px 0; border-top: 1px solid var(--line-2);
+    }
+    .m-row:first-of-type { border-top: none; }
+    .m-name { font-weight: 700; font-size: .92rem; }
+    .m-name small { display: block; font-weight: 500; font-size: .74rem; color: var(--muted); margin-top: 1px; }
+    .m-val { font-family: var(--mono); font-weight: 600; font-size: 1rem; }
+    .m-val .u { font-size: .72rem; color: var(--muted); margin-left: 2px; }
+    .m-bar-wrap { display: flex; flex-direction: column; gap: 5px; }
+    .m-track { height: 7px; border-radius: 99px; background: var(--line); position: relative; overflow: hidden; }
+    .m-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; }
+    .m-fill.good   { background: var(--good); }
+    .m-fill.watch  { background: var(--watch); }
+    .m-fill.action { background: var(--action); }
+    .m-range { display: flex; justify-content: space-between; font-size: .68rem; color: var(--faint); font-family: var(--mono); }
+    .pill {
+      display: inline-flex; align-items: center; gap: 5px; justify-self: end;
+      font-size: .7rem; font-weight: 700; letter-spacing: .02em;
+      padding: 5px 11px; border-radius: 99px; white-space: nowrap; border: 1px solid;
+    }
+    .pill.good   { color: var(--good);   background: var(--good-bg);   border-color: var(--good-line); }
+    .pill.watch  { color: var(--watch);  background: var(--watch-bg);  border-color: var(--watch-line); }
+    .pill.action { color: var(--action); background: var(--action-bg); border-color: var(--action-line); }
+    .pill .pdot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* Lab table */
+    .labwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-sm); }
+    table.lab { width: 100%; border-collapse: collapse; font-size: .84rem; min-width: 520px; }
+    table.lab thead th {
+      text-align: left; font-size: .64rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--muted); padding: 12px 16px; background: var(--wash); border-bottom: 1px solid var(--line);
+    }
+    table.lab thead th.r, table.lab td.r { text-align: right; }
+    table.lab td { padding: 12px 16px; border-bottom: 1px solid var(--line-2); }
+    table.lab tbody tr:last-child td { border-bottom: none; }
+    table.lab td.name { font-weight: 700; }
+    table.lab td.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    .lab-note {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: .78rem; color: var(--ink-soft); background: var(--wash);
+      border: 1px solid var(--line-2); border-left: 3px solid var(--sky);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 13px 16px; margin-top: 16px;
+    }
+    .lab-note svg { flex-shrink: 0; color: var(--sky); margin-top: 1px; }
+
+    /* Recommendation */
+    .reco {
+      display: grid; grid-template-columns: 1.3fr 1fr; gap: 0;
+      border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;
+    }
+    .reco-main { padding: 26px 28px; }
+    .reco-eyebrow { font-size: .66rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 9px; }
+    .reco-title { font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
+    .reco-desc { font-size: .88rem; color: var(--ink-soft); margin-bottom: 18px; }
+    .reco-list { display: flex; flex-direction: column; gap: 9px; }
+    .reco-list li { list-style: none; display: flex; gap: 9px; align-items: flex-start; font-size: .86rem; color: var(--ink-soft); }
+    .reco-check {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+      background: var(--good-bg); color: var(--good); display: grid; place-items: center;
+    }
+    .reco-side {
+      background: var(--navy); color: #fff; padding: 26px 28px;
+      display: flex; flex-direction: column; justify-content: center; gap: 18px;
+      position: relative; overflow: hidden;
+    }
+    .reco-side::before {
+      content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,.28), transparent 70%);
+    }
+    .reco-side .k { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); position: relative; }
+    .reco-cost { font-size: 2rem; font-weight: 800; letter-spacing: -.02em; line-height: 1; position: relative; }
+    .reco-cost small { font-size: .8rem; font-weight: 500; color: rgba(255,255,255,.55); }
+    .reco-credit {
+      position: relative; font-size: .8rem; color: #fff;
+      background: rgba(14,165,233,.16); border: 1px solid rgba(14,165,233,.3);
+      border-radius: var(--r-sm); padding: 11px 13px; line-height: 1.5;
+    }
+    .reco-credit b { color: #67D3F8; }
+
+    /* Plain-English notes */
+    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .note { background: var(--wash); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 16px 18px; }
+    .note h4 { font-size: .9rem; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .note h4 .ic { color: var(--sky); display: inline-grid; }
+    .note p { font-size: .82rem; color: var(--ink-soft); }
+
+    /* Next steps */
+    .steps { counter-reset: s; display: flex; flex-direction: column; gap: 12px; }
+    .step { display: flex; gap: 14px; align-items: flex-start; }
+    .step .n {
+      counter-increment: s; flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%; background: var(--sky); color: #fff;
+      font-weight: 800; font-size: .85rem; display: grid; place-items: center;
+    }
+    .step .n::before { content: counter(s); }
+    .step .t { font-size: .88rem; color: var(--ink-soft); padding-top: 3px; }
+    .step .t b { color: var(--ink); }
+
+    /* Disclaimer + footer */
+    .disc {
+      font-size: .76rem; color: var(--muted); line-height: 1.65;
+      background: var(--wash); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 16px 18px;
+    }
+    .disc b { color: var(--ink-soft); }
+    .doc-foot {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      padding: 22px 44px; border-top: 1px solid var(--line); background: var(--wash);
+      font-size: .78rem; color: var(--muted);
+    }
+    .doc-foot .contact { display: flex; gap: 18px; flex-wrap: wrap; }
+    .doc-foot a { color: var(--sky-dk); font-weight: 600; }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      .pad { padding: 24px 22px; }
+      .mast { padding: 24px 22px 20px; }
+      .rule { margin: 4px 22px; }
+      .doc-foot { padding: 20px 22px; }
+      .meta-grid { grid-template-columns: 1fr 1fr; }
+      .glance { grid-template-columns: 1fr 1fr; }
+      .verdict { grid-template-columns: 1fr; text-align: left; }
+      .v-action { text-align: left; }
+      .reco { grid-template-columns: 1fr; }
+      .notes { grid-template-columns: 1fr; }
+      .m-row { grid-template-columns: 1fr auto; grid-template-areas: "name pill" "val val" "bar bar"; gap: 8px 12px; }
+      .m-name { grid-area: name; } .pill { grid-area: pill; } .m-val { grid-area: val; } .m-bar-wrap { grid-area: bar; }
+      .doc-title { font-size: 1.5rem; }
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .demo-bar { display: none; }
+      .doc { box-shadow: none; margin: 0; max-width: none; border-radius: 0; animation: none; }
+      .reco-side, .tier-badge, .mast-mark { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Demo control bar (excluded from print) -->
+<div class="demo-bar">
+  <div class="demo-inner">
+    <div class="demo-brand">
+      <span class="demo-mark">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5C12 2.5 5 10 5 15a7 7 0 0014 0C19 10 12 2.5 12 2.5z"/><path d="M9 15a3 3 0 003 3"/></svg>
+      </span>
+      Tap<span>IQ</span>
+    </div>
+    <span class="demo-tag">Example report</span>
+    <div class="tabs" id="tabs"></div>
+    <button class="print-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Save PDF
+    </button>
+  </div>
+</div>
+
+<main id="doc"></main>
+
+<script>
+  /* ════════════════════════════════════════════════════════════════
+     REPORT DATA — one object per package tier.
+     Edit values / copy here; the template below renders them.
+  ════════════════════════════════════════════════════════════════ */
+  const CUSTOMER = {
+    name: 'Maria & Luis Reyes',
+    address: 'North Park, San Diego, CA 92104',
+    source: 'Kitchen cold tap',
+    tech: 'TapIQ Field Technician',
+  };
+
+  const ICONS = {
+    info: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+    check: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    drop: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5C12 2.5 5 10 5 15a7 7 0 0014 0C19 10 12 2.5 12 2.5z"/></svg>',
+    home: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>',
+    beaker: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-4.5 8A2 2 0 007.3 20h9.4a2 2 0 001.8-3L14 9V3"/></svg>',
+  };
+
+  const REPORTS = {
+    starter: {
+      tab: 'Starter Check',
+      tier: 'Starter Check · $49–$79',
+      id: 'TIQ-2026-0148',
+      date: 'Aug 24, 2026',
+      title: 'Water Analysis Report',
+      sub: 'Basic tap-water screening and filter recommendation.',
+      verdict: {
+        status: 'watch', score: 'B',
+        head: 'Safe to drink — taste and hardness are the real issues',
+        body: 'Your tap water meets safe-to-drink screening on the basics. The chloramine used for disinfection is affecting taste and odor, and your water is quite hard, which leaves scale on fixtures and appliances.',
+        action: 'Carbon filtration',
+      },
+      glance: [
+        { k: 'Overall', v: 'Good · Fair', mono: false },
+        { k: 'Primary concern', v: 'Taste + hardness', mono: false },
+        { k: 'Recommended', v: 'Carbon filter', mono: false },
+        { k: 'Est. cost', v: '$120–$180', mono: true },
+      ],
+      metrics: [
+        { name: 'Chloramine', note: 'Disinfectant — taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Total Dissolved Solids', note: 'TDS — overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Hardness', note: 'Calcium + magnesium', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
+        { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
+      ],
+      lab: null,
+      reco: {
+        eyebrow: 'Recommended setup',
+        title: 'Under-sink or countertop carbon filter',
+        desc: 'A carbon block filter removes the chloramine taste and odor at your drinking tap. It is the simplest, highest-impact fix for what we measured and is renter-friendly.',
+        list: [
+          'Removes chlorine/chloramine taste and smell',
+          'No plumbing changes for countertop models',
+          'Filter swaps roughly every 6 months',
+        ],
+        cost: '$120–$180', costNote: 'installed', credit: null,
+      },
+      notes: [
+        { icon: 'drop', h: 'Why it tastes “like a pool”', p: 'San Diego uses chloramine to keep water safe in the pipes. It is safe to drink but carbon filtration removes the taste easily.' },
+        { icon: 'home', h: 'About the hardness', p: 'Hard water is not a health risk, but it causes spotting and scale. A softener is optional and can be added later.' },
+      ],
+      steps: [
+        '<b>Choose your filter.</b> We can recommend two or three specific carbon models in your budget.',
+        '<b>Install.</b> Countertop takes minutes; under-sink about an hour. We can handle it or guide you.',
+        '<b>Re-check anytime.</b> Book a follow-up screening if your taste or supply changes.',
+      ],
+    },
+
+    kit: {
+      tab: 'Clean Water Starter Kit',
+      tier: 'Clean Water Starter Kit · $149',
+      id: 'TIQ-2026-0149',
+      date: 'Aug 24, 2026',
+      title: 'Water Analysis Report',
+      sub: 'On-site screening, full water profile, and a personalized recommendation.',
+      verdict: {
+        status: 'watch', score: 'B+',
+        head: 'Safe to drink — a two-part setup fixes taste and scale',
+        body: 'Your full on-site profile confirms safe-to-drink water with two clear issues: chloramine affecting taste, and hard water leaving scale. A carbon block handles the taste; a softener protects your plumbing and appliances.',
+        action: 'Carbon + softening',
+      },
+      glance: [
+        { k: 'Overall', v: 'Good', mono: false },
+        { k: 'Primary concern', v: 'Hardness + taste', mono: false },
+        { k: 'Recommended', v: 'Carbon + softener', mono: false },
+        { k: 'Est. cost', v: '$220+', mono: true },
+      ],
+      metrics: [
+        { name: 'Chloramine', note: 'Disinfectant — taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Total Dissolved Solids', note: 'TDS — overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Hardness', note: 'Calcium + magnesium (≈15 gpg)', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
+        { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
+        { name: 'Alkalinity', note: 'Buffering capacity', val: '118', unit: 'mg/L', lo: '80', hi: '120', fill: 62, status: 'good', label: 'Balanced' },
+        { name: 'Iron', note: 'Staining / metallic taste', val: '0.03', unit: 'mg/L', lo: '0', hi: '0.3', fill: 12, status: 'good', label: 'Very low' },
+      ],
+      lab: null,
+      reco: {
+        eyebrow: 'Recommended setup',
+        title: 'Under-sink carbon block + water softener',
+        desc: 'A carbon block at the kitchen tap fixes taste and odor for drinking and cooking. A softener treats the whole home for hardness, protecting your water heater, fixtures, and appliances.',
+        list: [
+          'Great-tasting water at the tap you drink from',
+          'Softer water extends appliance life and reduces scale',
+          'Sized to your household from the profile above',
+          'Renter-friendly softener options available',
+        ],
+        cost: '$220+', costNote: 'carbon; softener quoted separately',
+        credit: 'Your <b>$50 Starter Kit credit</b> applies toward filter setup or a full RO install.',
+      },
+      notes: [
+        { icon: 'drop', h: 'Do you need RO?', p: 'Not for safety. Your profile does not show contaminants that require reverse osmosis. Carbon plus softening is the right-sized answer.' },
+        { icon: 'home', h: 'Whole-home vs. point-of-use', p: 'We recommend point-of-use carbon for drinking and a whole-home softener for scale — the most cost-effective split for your home.' },
+      ],
+      steps: [
+        '<b>Confirm your setup.</b> We finalize the carbon model and softener size from your profile.',
+        '<b>Apply your credit.</b> The $50 Starter Kit credit comes off your install.',
+        '<b>Install & verify.</b> We re-check hardness and taste after install to confirm results.',
+      ],
+    },
+
+    advanced: {
+      tab: 'Advanced Water Profile',
+      tier: 'Advanced Water Profile · Custom',
+      id: 'TIQ-2026-0150',
+      date: 'Aug 24, 2026',
+      title: 'Advanced Water Analysis Report',
+      sub: 'On-site profile plus third-party certified lab testing, explained in plain English.',
+      verdict: {
+        status: 'action', score: 'B–',
+        head: 'Safe by regulation — trace lead and PFAS make RO the right call',
+        body: 'Your water meets regulatory safety limits. However, certified lab testing detected trace lead and PFAS below action levels but above zero. For a household with young children, we recommend reverse osmosis to reduce these to the lowest achievable levels.',
+        action: 'Reverse osmosis',
+      },
+      glance: [
+        { k: 'Overall', v: 'Fair', mono: false },
+        { k: 'Primary concern', v: 'Trace lead + PFAS', mono: false },
+        { k: 'Recommended', v: 'Under-sink RO', mono: false },
+        { k: 'Est. cost', v: '$450–$650', mono: true },
+      ],
+      metrics: [
+        { name: 'Total Dissolved Solids', note: 'TDS — overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Hardness', note: 'Calcium + magnesium', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
+        { name: 'Chloramine', note: 'Disinfectant — taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
+      ],
+      lab: {
+        title: 'Certified lab results',
+        desc: 'Analyzed by a third-party NELAP-accredited laboratory. Action levels reflect EPA / California standards.',
+        rows: [
+          { name: 'Lead', result: '4.0', unit: 'ppb', limit: '15 ppb', method: 'EPA 200.8', status: 'watch', label: 'Detected' },
+          { name: 'PFOA', result: '3.1', unit: 'ppt', limit: '4 ppt', method: 'EPA 533', status: 'watch', label: 'Near limit' },
+          { name: 'PFOS', result: '2.0', unit: 'ppt', limit: '4 ppt', method: 'EPA 533', status: 'good', label: 'Below limit' },
+          { name: 'Arsenic', result: '1.4', unit: 'ppb', limit: '10 ppb', method: 'EPA 200.8', status: 'good', label: 'Low' },
+          { name: 'Nitrate', result: '3.2', unit: 'mg/L', limit: '10 mg/L', method: 'EPA 300.0', status: 'good', label: 'Low' },
+          { name: 'Copper', result: '0.12', unit: 'mg/L', limit: '1.3 mg/L', method: 'EPA 200.8', status: 'good', label: 'Low' },
+          { name: 'Total Coliform', result: 'Absent', unit: '', limit: 'Absent', method: 'SM 9223B', status: 'good', label: 'None found' },
+        ],
+        note: 'Lead and PFAS below action levels are not a regulatory violation, but there is no known “safe” threshold for lead. Reverse osmosis reliably reduces both to near-undetectable levels.',
+      },
+      reco: {
+        eyebrow: 'Recommended setup',
+        title: 'Under-sink reverse osmosis + softener',
+        desc: 'An RO system at the kitchen tap removes lead, PFAS, and most dissolved solids for drinking and cooking. A whole-home softener handles hardness and protects your plumbing.',
+        list: [
+          'Reduces lead and PFAS to near-undetectable levels',
+          'Removes ~95% of dissolved solids — cleaner taste',
+          'Dedicated drinking-water tap at the sink',
+          'Softener protects appliances from scale',
+        ],
+        cost: '$450–$650', costNote: 'RO installed; softener quoted separately',
+        credit: 'Your <b>Starter Kit credit</b> applies toward the RO install.',
+      },
+      notes: [
+        { icon: 'beaker', h: 'What “below action level” means', p: 'Your levels are legal and common, but for infants and young children we recommend minimizing lead and PFAS exposure wherever practical.' },
+        { icon: 'drop', h: 'Why RO over carbon', p: 'Standard carbon does not reliably remove lead or PFAS. Reverse osmosis does — which is why we recommend it based on your lab results.' },
+      ],
+      steps: [
+        '<b>Review results together.</b> We walk through the lab report and answer questions.',
+        '<b>Install RO + softener.</b> We coordinate the install and apply your credit.',
+        '<b>Verify & retest.</b> Post-install screening confirms lead, PFAS, and TDS reductions.',
+      ],
+    },
+  };
+
+  /* ── Render ─────────────────────────────────────────────────────── */
+  function metricRow(m) {
+    return `
+      <div class="m-row">
+        <div class="m-name">${m.name}<small>${m.note}</small></div>
+        <div class="m-val">${m.val}<span class="u">${m.unit}</span></div>
+        <div class="m-bar-wrap">
+          <div class="m-track"><div class="m-fill ${m.status}" style="width:${m.fill}%"></div></div>
+          <div class="m-range"><span>${m.lo}</span><span>typical ≤ ${m.hi}</span></div>
+        </div>
+        <span class="pill ${m.status}"><span class="pdot"></span>${m.label}</span>
+      </div>`;
+  }
+
+  function labSection(lab, n) {
+    if (!lab) return '';
+    return `
+      <div class="pad">
+        <div class="sec-head"><span class="sec-num">${n}</span><span class="sec-title">${lab.title}</span></div>
+        <p class="sec-desc">${lab.desc}</p>
+        <div class="labwrap">
+          <table class="lab">
+            <thead><tr>
+              <th>Analyte</th><th class="r">Result</th><th class="r">Action level</th>
+              <th>Method</th><th class="r">Status</th>
+            </tr></thead>
+            <tbody>
+              ${lab.rows.map(r => `
+                <tr>
+                  <td class="name">${r.name}</td>
+                  <td class="r mono">${r.result}${r.unit ? ' ' + r.unit : ''}</td>
+                  <td class="r mono">${r.limit}</td>
+                  <td>${r.method}</td>
+                  <td class="r"><span class="pill ${r.status}"><span class="pdot"></span>${r.label}</span></td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div class="lab-note">${ICONS.info}<div>${lab.note}</div></div>
+      </div>
+      <div class="rule"></div>`;
+  }
+
+  function render(key) {
+    const r = REPORTS[key];
+    const hasLab = !!r.lab;
+    let n = 0; const num = () => String(++n).padStart(2, '0');
+
+    document.getElementById('doc').innerHTML = `
+      <article class="doc">
+        <!-- Masthead -->
+        <div class="mast">
+          <div class="mast-logo">
+            <span class="mast-mark">${ICONS.drop.replace('width="15" height="15"','width="22" height="22"').replace('stroke="currentColor"','stroke="#fff"')}</span>
+            <div>
+              <div class="mast-name">Tap<span>IQ</span></div>
+              <div class="mast-kicker">Test your tap. Find your filter.</div>
+            </div>
+          </div>
+          <div class="mast-meta">
+            <div>Report <b>${r.id}</b></div>
+            <div>Issued <b>${r.date}</b></div>
+            <div>San Diego County</div>
+          </div>
+        </div>
+
+        <!-- Title + customer -->
+        <div class="pad">
+          <div class="titleblock">
+            <div>
+              <div class="doc-title">${r.title}</div>
+              <div class="doc-sub">${r.sub}</div>
+            </div>
+            <div class="tier-badge"><span class="dot"></span>${r.tier}</div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-cell"><div class="k">Prepared for</div><div class="v">${CUSTOMER.name}</div></div>
+            <div class="meta-cell"><div class="k">Location</div><div class="v">${CUSTOMER.address}</div></div>
+            <div class="meta-cell"><div class="k">Sample source</div><div class="v">${CUSTOMER.source}</div></div>
+            <div class="meta-cell"><div class="k">Collected by</div><div class="v">${CUSTOMER.tech}</div></div>
+          </div>
+        </div>
+        <div class="rule"></div>
+
+        <!-- Verdict -->
+        <div class="pad">
+          <div class="verdict ${r.verdict.status}">
+            <div class="v-score"><div class="num">${r.verdict.score}</div><div class="of">RATING</div></div>
+            <div>
+              <div class="v-head">${r.verdict.head}</div>
+              <div class="v-body">${r.verdict.body}</div>
+            </div>
+            <div class="v-action">
+              <div class="lbl">Recommended</div>
+              <div class="pill">${r.verdict.action}</div>
+            </div>
+          </div>
+        </div>
+        <div class="rule"></div>
+
+        <!-- Glance -->
+        <div class="pad">
+          <div class="sec-head"><span class="sec-num">${num()}</span><span class="sec-title">Your water at a glance</span></div>
+          <div class="glance">
+            ${r.glance.map(g => `<div class="g-tile"><div class="k">${g.k}</div><div class="v ${g.mono ? 'mono' : ''}">${g.v}</div></div>`).join('')}
+          </div>
+        </div>
+        <div class="rule"></div>
+
+        <!-- Measurements -->
+        <div class="pad">
+          <div class="sec-head"><span class="sec-num">${num()}</span><span class="sec-title">On-site measurements</span></div>
+          <p class="sec-desc">Field-screened at your tap. Bars show where your result sits against typical drinking-water ranges.</p>
+          ${r.metrics.map(metricRow).join('')}
+        </div>
+        <div class="rule"></div>
+
+        ${hasLab ? labSection(r.lab, num()) : ''}
+
+        <!-- Recommendation -->
+        <div class="pad">
+          <div class="sec-head"><span class="sec-num">${num()}</span><span class="sec-title">Our recommendation</span></div>
+          <div class="reco">
+            <div class="reco-main">
+              <div class="reco-eyebrow">${r.reco.eyebrow}</div>
+              <div class="reco-title">${r.reco.title}</div>
+              <div class="reco-desc">${r.reco.desc}</div>
+              <ul class="reco-list">
+                ${r.reco.list.map(li => `<li><span class="reco-check">${ICONS.check}</span>${li}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="reco-side">
+              <div>
+                <div class="k">Estimated cost</div>
+                <div class="reco-cost">${r.reco.cost}<br><small>${r.reco.costNote}</small></div>
+              </div>
+              ${r.reco.credit ? `<div class="reco-credit">${r.reco.credit}</div>` : ''}
+            </div>
+          </div>
+        </div>
+        <div class="rule"></div>
+
+        <!-- Plain-English notes -->
+        <div class="pad">
+          <div class="sec-head"><span class="sec-num">${num()}</span><span class="sec-title">What this means for you</span></div>
+          <div class="notes">
+            ${r.notes.map(nt => `<div class="note"><h4><span class="ic">${ICONS[nt.icon]}</span>${nt.h}</h4><p>${nt.p}</p></div>`).join('')}
+          </div>
+        </div>
+        <div class="rule"></div>
+
+        <!-- Next steps -->
+        <div class="pad">
+          <div class="sec-head"><span class="sec-num">${num()}</span><span class="sec-title">Next steps</span></div>
+          <div class="steps">
+            ${r.steps.map(s => `<div class="step"><div class="n"></div><div class="t">${s}</div></div>`).join('')}
+          </div>
+        </div>
+        <div class="rule"></div>
+
+        <!-- Disclaimer -->
+        <div class="pad">
+          <div class="disc">
+            <b>About this report.</b> ${hasLab
+              ? 'On-site values are field screening measurements; contaminant values are from third-party certified laboratory testing. Field screening is not a substitute for certified testing and is provided for guidance.'
+              : 'Values are field screening measurements, not certified laboratory results. For health-related contaminants such as lead, PFAS, or bacteria, TapIQ recommends third-party certified lab testing (see the Advanced Water Profile).'}
+            Recommendations reflect the samples collected on the issue date and your stated household needs.
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="doc-foot">
+          <div class="contact">
+            <span>hello@tapiqwater.com</span>
+            <span>(000) 000-0000</span>
+          </div>
+          <div>© 2026 TapIQ · Serving San Diego County</div>
+        </div>
+      </article>`;
+
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* Tabs */
+  const tabsEl = document.getElementById('tabs');
+  Object.entries(REPORTS).forEach(([key, r]) => {
+    const b = document.createElement('button');
+    b.className = 'tab'; b.dataset.key = key; b.textContent = r.tab;
+    b.onclick = () => render(key);
+    tabsEl.appendChild(b);
+  });
+
+  // Open a specific tier via ?tier=starter|kit|advanced; default to flagship
+  const wanted = new URLSearchParams(location.search).get('tier');
+  render(REPORTS[wanted] ? wanted : 'kit');
+</script>
+</body>
+</html>

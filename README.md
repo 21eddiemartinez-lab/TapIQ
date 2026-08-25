@@ -5,9 +5,16 @@
 Landing page for TapIQ — a local San Diego drinking-water screening and filter
 guidance service for renters, families, and bottled-water users.
 
+## Pages
+
+- **`index.html`** — the marketing landing page
+- **`report.html`** — the example water analysis report (the customer deliverable).
+  Switch package tiers with the tabs, or deep-link a tier:
+  `report.html?tier=starter` · `report.html?tier=kit` · `report.html?tier=advanced`
+
 ## Running it
 
-This is a single standalone file with no build step. Just open it:
+Standalone files, no build step. Just open them:
 
 ```
 index.html
