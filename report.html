@@ -6,7 +6,7 @@
   <title>TapIQ Water Analysis Report</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@600;700;800;900&family=Archivo+Narrow:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     /* ═══════════════════════════════════════════════════════════════
        TapIQ — Water Analysis Report (example deliverable)
@@ -14,39 +14,42 @@
        Type: Plus Jakarta Sans (text) + IBM Plex Mono (measured data)
     ═══════════════════════════════════════════════════════════════ */
     :root {
-      --ink:      #0B1B34;
-      --ink-soft: #33465F;
-      --muted:    #64748B;
-      --faint:    #94A3B8;
-      --line:     #E2E8F0;
-      --line-2:   #EEF2F7;
-      --paper:    #E8EEF5;   /* page ground */
-      --card:     #FFFFFF;
-      --wash:     #F5F9FD;   /* subtle inset panels */
+      /* Bold Utilitarian — ink on bone, deep teal, flat status colors */
+      --ink:      #101010;
+      --ink-soft: #2E2E2A;
+      --muted:    #6A685E;
+      --faint:    #96938A;
+      --line:     #101010;   /* hard borders */
+      --line-2:   #D8D6CC;   /* soft dividers */
+      --paper-bg: #DAD8CC;   /* page ground behind the doc */
+      --card:     #FCFBF7;
+      --wash:     #EEECE2;   /* inset panels */
 
-      --sky:      #0EA5E9;
-      --sky-dk:   #0369A1;
-      --navy:     #04122A;
-      --orange:   #F97316;
+      --sky:      #007A6C;   /* brand teal (accent) */
+      --sky-dk:   #005C51;
+      --navy:     #101010;   /* dark panels */
+      --orange:   #E4572E;
 
-      /* semantic status (separate from brand accent) */
-      --good:     #15803D;  --good-bg:  #DCFCE7;  --good-line:#A7F3C4;
-      --watch:    #B45309;  --watch-bg: #FEF3D6;  --watch-line:#FBD98A;
-      --action:   #B91C1C;  --action-bg:#FDE4E4;  --action-line:#F7B4B4;
+      /* semantic status — flat, high-contrast */
+      --good:     #0F7A3D;  --good-bg:  #DDF3E3;  --good-line:#0F7A3D;
+      --watch:    #A65A0B;  --watch-bg: #FBEBCF;  --watch-line:#A65A0B;
+      --action:   #B4231C;  --action-bg:#F8DCDA;  --action-line:#B4231C;
 
-      --f: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --f:    'Archivo', system-ui, -apple-system, sans-serif;
+      --disp: 'Archivo Expanded', 'Archivo', system-ui, sans-serif;
+      --cond: 'Archivo Narrow', 'Archivo', system-ui, sans-serif;
       --mono: 'IBM Plex Mono', ui-monospace, monospace;
-      --r: 14px; --r-sm: 9px;
-      --sh: 0 1px 2px rgba(11,27,52,.04), 0 12px 34px rgba(11,27,52,.08);
+      --r: 0; --r-sm: 0;
+      --sh: 6px 6px 0 var(--ink);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
     html { scroll-behavior: smooth; }
     body {
       font-family: var(--f);
-      background: var(--paper);
+      background: var(--paper-bg);
       color: var(--ink);
-      line-height: 1.6;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
       padding-bottom: 60px;
     }
@@ -55,52 +58,52 @@
     /* ── Demo control bar (not part of the printed report) ─────────── */
     .demo-bar {
       position: sticky; top: 0; z-index: 50;
-      background: rgba(4,18,42,.92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: var(--ink);
+      border-bottom: 2px solid #34D9C4;
     }
     .demo-inner {
       max-width: 900px; margin: 0 auto;
-      display: flex; align-items: center; gap: 16px;
+      display: flex; align-items: center; gap: 14px;
       padding: 12px 24px; flex-wrap: wrap;
     }
     .demo-brand {
-      display: flex; align-items: center; gap: 9px;
-      font-weight: 800; font-size: 1.05rem; color: #fff; letter-spacing: -.02em;
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--disp); font-weight: 900; font-size: 1.05rem; color: #fff; letter-spacing: -.02em;
       margin-right: auto;
     }
-    .demo-brand span { color: var(--sky); }
+    .demo-brand span { color: #34D9C4; }
     .demo-mark {
-      width: 26px; height: 26px; border-radius: 8px;
+      width: 28px; height: 28px;
       display: grid; place-items: center;
-      background: linear-gradient(150deg, var(--sky), var(--sky-dk));
-      box-shadow: 0 2px 8px rgba(14,165,233,.4);
+      background: var(--sky); border: 2px solid #fff;
     }
     .demo-tag {
-      font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-      color: rgba(255,255,255,.45); align-self: center;
+      font-family: var(--cond); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); align-self: center;
     }
-    .tabs { display: flex; gap: 4px; background: rgba(255,255,255,.06); padding: 4px; border-radius: 99px; }
+    .tabs { display: flex; gap: 6px; }
     .tab {
-      border: none; cursor: pointer; font-family: var(--f);
-      font-size: .8rem; font-weight: 600; color: rgba(255,255,255,.6);
-      padding: 8px 15px; border-radius: 99px; transition: all .18s; white-space: nowrap;
+      cursor: pointer; font-family: var(--cond);
+      font-size: .8rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+      color: rgba(255,255,255,.7); background: transparent;
+      border: 2px solid rgba(255,255,255,.3);
+      padding: 7px 13px; transition: all .12s; white-space: nowrap;
     }
-    .tab:hover { color: #fff; }
-    .tab.active { background: var(--sky); color: #fff; box-shadow: 0 2px 10px rgba(14,165,233,.45); }
+    .tab:hover { color: #fff; border-color: #fff; }
+    .tab.active { background: var(--sky); color: #fff; border-color: #fff; }
     .print-btn {
       display: inline-flex; align-items: center; gap: 7px;
-      border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.04);
-      color: #fff; cursor: pointer; font-family: var(--f);
-      font-size: .8rem; font-weight: 600; padding: 8px 15px; border-radius: 99px;
-      transition: background .18s;
+      border: 2px solid #fff; background: transparent;
+      color: #fff; cursor: pointer; font-family: var(--cond);
+      font-size: .8rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+      padding: 7px 13px; transition: background .12s, color .12s;
     }
-    .print-btn:hover { background: rgba(255,255,255,.12); }
+    .print-btn:hover { background: #fff; color: var(--ink); }
 
     /* ── Document shell ───────────────────────────────────────────── */
     .doc {
-      max-width: 900px; margin: 32px auto; background: var(--card);
-      border-radius: var(--r); box-shadow: var(--sh);
+      max-width: 900px; margin: 40px auto; background: var(--card);
+      border: 2px solid var(--ink); box-shadow: var(--sh);
       overflow: hidden;
       animation: rise .5s cubic-bezier(.2,.7,.3,1) both;
     }
@@ -109,19 +112,18 @@
     /* Masthead */
     .mast {
       display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 34px 44px 26px;
-      border-bottom: 1px solid var(--line);
-      background:
-        radial-gradient(120% 140% at 100% 0%, rgba(14,165,233,.07) 0%, transparent 45%);
+      padding: 32px 40px 26px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--ink);
     }
-    .mast-logo { display: flex; align-items: center; gap: 11px; }
+    .mast * { color: var(--card); }
+    .mast-logo { display: flex; align-items: center; gap: 12px; }
     .mast-mark {
-      width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
-      background: linear-gradient(150deg, var(--sky), var(--sky-dk));
-      box-shadow: 0 4px 14px rgba(14,165,233,.32);
+      width: 42px; height: 42px; display: grid; place-items: center;
+      background: var(--sky); border: 2px solid var(--card);
     }
-    .mast-name { font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; }
-    .mast-name span { color: var(--sky); }
+    .mast-name { font-family: var(--disp); font-size: 1.4rem; font-weight: 900; letter-spacing: -.02em; color: var(--card); }
+    .mast-name span { color: #34D9C4; }
     .mast-kicker { font-size: .72rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; margin-top: 1px; }
     .mast-meta { text-align: right; font-size: .78rem; color: var(--muted); line-height: 1.7; }
     .mast-meta b { color: var(--ink); font-weight: 700; }
@@ -131,21 +133,21 @@
 
     /* Title block */
     .titleblock { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-    .doc-title { font-size: 1.9rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; text-wrap: balance; }
-    .doc-sub { color: var(--muted); font-size: .9rem; margin-top: 5px; }
+    .doc-title { font-family: var(--disp); font-size: 1.8rem; font-weight: 900; letter-spacing: -.02em; line-height: 1.02; text-wrap: balance; }
+    .doc-sub { color: var(--muted); font-size: .9rem; margin-top: 6px; }
     .tier-badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: .74rem; font-weight: 700; letter-spacing: .03em;
-      padding: 7px 14px; border-radius: 99px;
-      background: var(--navy); color: #fff; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--cond); font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      padding: 7px 14px; border: 2px solid var(--ink);
+      background: var(--ink); color: #fff; white-space: nowrap;
     }
-    .tier-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sky); }
+    .tier-badge .dot { width: 7px; height: 7px; background: #34D9C4; }
 
     /* Customer meta grid */
     .meta-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-      background: var(--line); border: 1px solid var(--line);
-      border-radius: var(--r-sm); overflow: hidden; margin-top: 24px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+      background: var(--ink); border: 2px solid var(--ink);
+      overflow: hidden; margin-top: 24px;
     }
     .meta-cell { background: var(--card); padding: 14px 16px; }
     .meta-cell .k { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
@@ -154,54 +156,65 @@
     /* Verdict banner */
     .verdict {
       display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
-      padding: 24px 26px; border-radius: var(--r); position: relative; overflow: hidden;
-      border: 1px solid var(--line);
+      padding: 24px 26px 24px 30px; position: relative; overflow: hidden;
+      border: 2px solid var(--ink);
     }
-    .verdict::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+    .verdict::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; }
     .verdict.good::before   { background: var(--good); }
     .verdict.watch::before  { background: var(--watch); }
     .verdict.action::before { background: var(--action); }
-    .verdict.good   { background: linear-gradient(90deg, var(--good-bg), transparent 70%); }
-    .verdict.watch  { background: linear-gradient(90deg, var(--watch-bg), transparent 70%); }
-    .verdict.action { background: linear-gradient(90deg, var(--action-bg), transparent 70%); }
+    .verdict.good   { background: var(--good-bg); }
+    .verdict.watch  { background: var(--watch-bg); }
+    .verdict.action { background: var(--action-bg); }
     .v-score {
-      width: 92px; height: 92px; border-radius: 50%; display: grid; place-items: center;
-      background: var(--card); border: 3px solid; flex-shrink: 0; text-align: center;
+      width: 92px; height: 92px; display: grid; place-items: center;
+      background: var(--card); border: 2px solid var(--ink); box-shadow: var(--sh) ; flex-shrink: 0; text-align: center;
     }
-    .verdict.good   .v-score { border-color: var(--good-line); }
-    .verdict.watch  .v-score { border-color: var(--watch-line); }
-    .verdict.action .v-score { border-color: var(--action-line); }
-    .v-score .num { font-size: 1.9rem; font-weight: 800; line-height: 1; font-family: var(--mono); }
-    .v-score .of  { font-size: .6rem; color: var(--muted); font-weight: 600; letter-spacing: .06em; margin-top: 2px; }
+    .v-score .num { font-family: var(--disp); font-size: 2rem; font-weight: 900; line-height: 1; }
+    .v-score .of  { font-family: var(--cond); font-size: .6rem; color: var(--muted); font-weight: 700; letter-spacing: .08em; margin-top: 3px; }
     .verdict.good   .v-score .num { color: var(--good); }
     .verdict.watch  .v-score .num { color: var(--watch); }
     .verdict.action .v-score .num { color: var(--action); }
-    .v-head { font-size: 1.18rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 5px; }
+    .v-head { font-family: var(--disp); font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; line-height: 1.15; color: var(--ink); }
     .v-body { font-size: .9rem; color: var(--ink-soft); max-width: 52ch; }
-    .v-action {
-      text-align: right; flex-shrink: 0;
-    }
-    .v-action .lbl { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    .v-action { text-align: right; flex-shrink: 0; }
+    .v-action .lbl { font-family: var(--cond); font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
     .v-action .pill {
-      display: inline-block; font-weight: 700; font-size: .9rem; color: var(--navy);
-      background: #fff; border: 1.5px solid var(--sky); padding: 8px 14px; border-radius: 99px;
+      display: inline-block; font-weight: 800; font-size: .88rem; color: #fff;
+      background: var(--ink); border: 2px solid var(--ink); padding: 8px 14px;
     }
 
     /* Section heading */
     .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
     .sec-num {
-      font-family: var(--mono); font-size: .72rem; font-weight: 600; color: var(--sky);
-      border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px;
+      font-family: var(--mono); font-size: .74rem; font-weight: 600; color: #fff; background: var(--ink);
+      border: 2px solid var(--ink); padding: 3px 8px;
     }
-    .sec-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -.01em; }
+    .sec-title { font-family: var(--disp); font-size: 1.05rem; font-weight: 800; letter-spacing: -.01em; }
     .sec-desc { font-size: .82rem; color: var(--muted); margin: -10px 0 20px; }
 
     /* Glance tiles */
     .glance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .g-tile { background: var(--wash); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 16px; }
-    .g-tile .k { font-size: .64rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--faint); }
-    .g-tile .v { font-size: 1.02rem; font-weight: 800; margin-top: 6px; letter-spacing: -.01em; }
-    .g-tile .v.mono { font-size: 1.15rem; }
+    .g-tile { background: var(--wash); border: 2px solid var(--ink); padding: 16px; }
+    .g-tile .k { font-family: var(--cond); font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+    .g-tile .v { font-family: var(--disp); font-size: 1rem; font-weight: 800; margin-top: 7px; letter-spacing: -.01em; }
+    .g-tile .v.mono { font-family: var(--mono); font-size: 1.15rem; }
+
+    /* Bottled-water savings band */
+    .savings {
+      display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
+      background: var(--sky); color: #fff; border: 2px solid var(--ink);
+      box-shadow: var(--sh); padding: 26px 30px;
+    }
+    .sv-label { font-family: var(--cond); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 8px; }
+    .sv-head { font-family: var(--disp); font-size: 1.35rem; font-weight: 900; letter-spacing: -.01em; line-height: 1.05; margin-bottom: 10px; }
+    .sv-body { font-size: .9rem; color: rgba(255,255,255,.9); max-width: 48ch; line-height: 1.5; }
+    .sv-body b { color: #fff; background: rgba(0,0,0,.22); padding: 0 4px; }
+    .sv-figure { text-align: right; flex-shrink: 0; border-left: 2px solid rgba(255,255,255,.35); padding-left: 28px; }
+    .sv-k { font-family: var(--cond); font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+    .sv-num { font-family: var(--disp); font-size: 2.7rem; font-weight: 900; line-height: 1; margin: 4px 0 8px; font-variant-numeric: tabular-nums; }
+    .sv-num span { font-family: var(--f); font-size: 1rem; font-weight: 600; color: rgba(255,255,255,.75); }
+    .sv-pay { display: inline-block; font-family: var(--cond); font-size: .74rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; background: var(--ink); color: #fff; border: 2px solid var(--ink); padding: 4px 10px; }
 
     /* Measurement rows */
     .m-row {
@@ -214,28 +227,28 @@
     .m-val { font-family: var(--mono); font-weight: 600; font-size: 1rem; }
     .m-val .u { font-size: .72rem; color: var(--muted); margin-left: 2px; }
     .m-bar-wrap { display: flex; flex-direction: column; gap: 5px; }
-    .m-track { height: 7px; border-radius: 99px; background: var(--line); position: relative; overflow: hidden; }
-    .m-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; }
+    .m-track { height: 10px; background: var(--card); border: 2px solid var(--ink); position: relative; overflow: hidden; }
+    .m-fill { position: absolute; left: 0; top: 0; bottom: 0; }
     .m-fill.good   { background: var(--good); }
     .m-fill.watch  { background: var(--watch); }
     .m-fill.action { background: var(--action); }
     .m-range { display: flex; justify-content: space-between; font-size: .68rem; color: var(--faint); font-family: var(--mono); }
     .pill {
       display: inline-flex; align-items: center; gap: 5px; justify-self: end;
-      font-size: .7rem; font-weight: 700; letter-spacing: .02em;
-      padding: 5px 11px; border-radius: 99px; white-space: nowrap; border: 1px solid;
+      font-family: var(--cond); font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      padding: 4px 10px; white-space: nowrap; border: 2px solid var(--ink);
     }
-    .pill.good   { color: var(--good);   background: var(--good-bg);   border-color: var(--good-line); }
-    .pill.watch  { color: var(--watch);  background: var(--watch-bg);  border-color: var(--watch-line); }
-    .pill.action { color: var(--action); background: var(--action-bg); border-color: var(--action-line); }
-    .pill .pdot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .pill.good   { color: var(--good);   background: var(--good-bg); }
+    .pill.watch  { color: var(--watch);  background: var(--watch-bg); }
+    .pill.action { color: var(--action); background: var(--action-bg); }
+    .pill .pdot { width: 7px; height: 7px; background: currentColor; }
 
     /* Lab table */
-    .labwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-sm); }
+    .labwrap { overflow-x: auto; border: 2px solid var(--ink); }
     table.lab { width: 100%; border-collapse: collapse; font-size: .84rem; min-width: 520px; }
     table.lab thead th {
-      text-align: left; font-size: .64rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
-      color: var(--muted); padding: 12px 16px; background: var(--wash); border-bottom: 1px solid var(--line);
+      text-align: left; font-family: var(--cond); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: #fff; padding: 11px 16px; background: var(--ink); border-bottom: 2px solid var(--ink);
     }
     table.lab thead th.r, table.lab td.r { text-align: right; }
     table.lab td { padding: 12px 16px; border-bottom: 1px solid var(--line-2); }
@@ -245,78 +258,75 @@
 
     .lab-note {
       display: flex; gap: 10px; align-items: flex-start;
-      font-size: .78rem; color: var(--ink-soft); background: var(--wash);
-      border: 1px solid var(--line-2); border-left: 3px solid var(--sky);
-      border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 13px 16px; margin-top: 16px;
+      font-size: .8rem; color: var(--ink-soft); background: var(--wash);
+      border: 2px solid var(--ink); border-left: 6px solid var(--sky);
+      padding: 13px 16px; margin-top: 16px;
     }
     .lab-note svg { flex-shrink: 0; color: var(--sky); margin-top: 1px; }
 
     /* Recommendation */
     .reco {
       display: grid; grid-template-columns: 1.3fr 1fr; gap: 0;
-      border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;
+      border: 2px solid var(--ink); overflow: hidden;
     }
     .reco-main { padding: 26px 28px; }
-    .reco-eyebrow { font-size: .66rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 9px; }
-    .reco-title { font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
+    .reco-eyebrow { font-family: var(--cond); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 9px; }
+    .reco-title { font-family: var(--disp); font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 8px; line-height: 1.1; }
     .reco-desc { font-size: .88rem; color: var(--ink-soft); margin-bottom: 18px; }
     .reco-list { display: flex; flex-direction: column; gap: 9px; }
-    .reco-list li { list-style: none; display: flex; gap: 9px; align-items: flex-start; font-size: .86rem; color: var(--ink-soft); }
+    .reco-list li { list-style: none; display: flex; gap: 10px; align-items: flex-start; font-size: .86rem; color: var(--ink-soft); }
     .reco-check {
-      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
-      background: var(--good-bg); color: var(--good); display: grid; place-items: center;
+      width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+      background: var(--sky); color: #fff; border: 2px solid var(--ink); display: grid; place-items: center;
     }
     .reco-side {
-      background: var(--navy); color: #fff; padding: 26px 28px;
+      background: var(--ink); color: #fff; padding: 26px 28px;
       display: flex; flex-direction: column; justify-content: center; gap: 18px;
-      position: relative; overflow: hidden;
+      position: relative; overflow: hidden; border-left: 2px solid var(--ink);
     }
-    .reco-side::before {
-      content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(14,165,233,.28), transparent 70%);
-    }
-    .reco-side .k { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); position: relative; }
-    .reco-cost { font-size: 2rem; font-weight: 800; letter-spacing: -.02em; line-height: 1; position: relative; }
-    .reco-cost small { font-size: .8rem; font-weight: 500; color: rgba(255,255,255,.55); }
+    .reco-side .k { font-family: var(--cond); font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.55); position: relative; }
+    .reco-cost { font-family: var(--disp); font-size: 2rem; font-weight: 900; letter-spacing: -.01em; line-height: 1; position: relative; }
+    .reco-cost small { font-family: var(--f); font-size: .8rem; font-weight: 500; color: rgba(255,255,255,.6); }
     .reco-credit {
-      position: relative; font-size: .8rem; color: #fff;
-      background: rgba(14,165,233,.16); border: 1px solid rgba(14,165,233,.3);
-      border-radius: var(--r-sm); padding: 11px 13px; line-height: 1.5;
+      position: relative; font-size: .82rem; color: #fff;
+      background: rgba(0,122,108,.25); border: 2px solid var(--sky);
+      padding: 11px 13px; line-height: 1.45;
     }
-    .reco-credit b { color: #67D3F8; }
+    .reco-credit b { color: #34D9C4; }
 
     /* Plain-English notes */
     .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .note { background: var(--wash); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 16px 18px; }
-    .note h4 { font-size: .9rem; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .note { background: var(--wash); border: 2px solid var(--ink); padding: 16px 18px; }
+    .note h4 { font-family: var(--disp); font-size: .9rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
     .note h4 .ic { color: var(--sky); display: inline-grid; }
-    .note p { font-size: .82rem; color: var(--ink-soft); }
+    .note p { font-size: .83rem; color: var(--ink-soft); }
 
     /* Next steps */
     .steps { counter-reset: s; display: flex; flex-direction: column; gap: 12px; }
     .step { display: flex; gap: 14px; align-items: flex-start; }
     .step .n {
       counter-increment: s; flex-shrink: 0;
-      width: 28px; height: 28px; border-radius: 50%; background: var(--sky); color: #fff;
-      font-weight: 800; font-size: .85rem; display: grid; place-items: center;
+      width: 30px; height: 30px; background: var(--sky); color: #fff; border: 2px solid var(--ink);
+      font-family: var(--disp); font-weight: 800; font-size: .85rem; display: grid; place-items: center;
     }
     .step .n::before { content: counter(s); }
-    .step .t { font-size: .88rem; color: var(--ink-soft); padding-top: 3px; }
+    .step .t { font-size: .89rem; color: var(--ink-soft); padding-top: 4px; }
     .step .t b { color: var(--ink); }
 
     /* Disclaimer + footer */
     .disc {
-      font-size: .76rem; color: var(--muted); line-height: 1.65;
-      background: var(--wash); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 16px 18px;
+      font-size: .78rem; color: var(--muted); line-height: 1.6;
+      background: var(--wash); border: 2px solid var(--ink); border-left: 6px solid var(--sky); padding: 16px 18px;
     }
-    .disc b { color: var(--ink-soft); }
+    .disc b { color: var(--ink); }
     .doc-foot {
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-      padding: 22px 44px; border-top: 1px solid var(--line); background: var(--wash);
-      font-size: .78rem; color: var(--muted);
+      padding: 22px 40px; border-top: 2px solid var(--ink); background: var(--ink);
+      font-family: var(--cond); font-size: .82rem; color: rgba(255,255,255,.55);
     }
     .doc-foot .contact { display: flex; gap: 18px; flex-wrap: wrap; }
-    .doc-foot a { color: var(--sky-dk); font-weight: 600; }
+    .doc-foot, .doc-foot * { color: rgba(255,255,255,.6); }
+    .doc-foot a { color: #34D9C4; font-weight: 600; }
 
     /* Responsive */
     @media (max-width: 760px) {
@@ -328,6 +338,8 @@
       .glance { grid-template-columns: 1fr 1fr; }
       .verdict { grid-template-columns: 1fr; text-align: left; }
       .v-action { text-align: left; }
+      .savings { grid-template-columns: 1fr; gap: 18px; }
+      .sv-figure { text-align: left; border-left: none; padding-left: 0; border-top: 2px solid rgba(255,255,255,.35); padding-top: 16px; }
       .reco { grid-template-columns: 1fr; }
       .notes { grid-template-columns: 1fr; }
       .m-row { grid-template-columns: 1fr auto; grid-template-areas: "name pill" "val val" "bar bar"; gap: 8px 12px; }
@@ -339,8 +351,8 @@
     @media print {
       body { background: #fff; padding: 0; }
       .demo-bar { display: none; }
-      .doc { box-shadow: none; margin: 0; max-width: none; border-radius: 0; animation: none; }
-      .reco-side, .tier-badge, .mast-mark { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .doc { box-shadow: none; margin: 0; max-width: none; border: none; animation: none; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
   </style>
 </head>
@@ -396,10 +408,11 @@
       sub: 'Basic tap-water screening and filter recommendation.',
       verdict: {
         status: 'watch', score: 'B',
-        head: 'Safe to drink — taste and hardness are the real issues',
+        head: 'Safe to drink, but taste and hardness are the real issues',
         body: 'Your tap water meets safe-to-drink screening on the basics. The chloramine used for disinfection is affecting taste and odor, and your water is quite hard, which leaves scale on fixtures and appliances.',
         action: 'Carbon filtration',
       },
+      savings: { bottledYear: '$1,080', setup: '$150', payback: '≈ 7 weeks', netYear: '$1,020' },
       glance: [
         { k: 'Overall', v: 'Good · Fair', mono: false },
         { k: 'Primary concern', v: 'Taste + hardness', mono: false },
@@ -407,8 +420,8 @@
         { k: 'Est. cost', v: '$120–$180', mono: true },
       ],
       metrics: [
-        { name: 'Chloramine', note: 'Disinfectant — taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
-        { name: 'Total Dissolved Solids', note: 'TDS — overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Chloramine', note: 'Disinfectant · taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Total Dissolved Solids', note: 'TDS · overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
         { name: 'Hardness', note: 'Calcium + magnesium', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
         { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
       ],
@@ -444,10 +457,11 @@
       sub: 'On-site screening, full water profile, and a personalized recommendation.',
       verdict: {
         status: 'watch', score: 'B+',
-        head: 'Safe to drink — a two-part setup fixes taste and scale',
+        head: 'Safe to drink. A two-part setup fixes taste and scale',
         body: 'Your full on-site profile confirms safe-to-drink water with two clear issues: chloramine affecting taste, and hard water leaving scale. A carbon block handles the taste; a softener protects your plumbing and appliances.',
         action: 'Carbon + softening',
       },
+      savings: { bottledYear: '$1,080', setup: '$220', payback: '≈ 2.5 months', netYear: '$1,010' },
       glance: [
         { k: 'Overall', v: 'Good', mono: false },
         { k: 'Primary concern', v: 'Hardness + taste', mono: false },
@@ -455,8 +469,8 @@
         { k: 'Est. cost', v: '$220+', mono: true },
       ],
       metrics: [
-        { name: 'Chloramine', note: 'Disinfectant — taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
-        { name: 'Total Dissolved Solids', note: 'TDS — overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Chloramine', note: 'Disinfectant · taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Total Dissolved Solids', note: 'TDS · overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
         { name: 'Hardness', note: 'Calcium + magnesium (≈15 gpg)', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
         { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
         { name: 'Alkalinity', note: 'Buffering capacity', val: '118', unit: 'mg/L', lo: '80', hi: '120', fill: 62, status: 'good', label: 'Balanced' },
@@ -478,7 +492,7 @@
       },
       notes: [
         { icon: 'drop', h: 'Do you need RO?', p: 'Not for safety. Your profile does not show contaminants that require reverse osmosis. Carbon plus softening is the right-sized answer.' },
-        { icon: 'home', h: 'Whole-home vs. point-of-use', p: 'We recommend point-of-use carbon for drinking and a whole-home softener for scale — the most cost-effective split for your home.' },
+        { icon: 'home', h: 'Whole-home vs. point-of-use', p: 'We recommend point-of-use carbon for drinking and a whole-home softener for scale, the most cost-effective split for your home.' },
       ],
       steps: [
         '<b>Confirm your setup.</b> We finalize the carbon model and softener size from your profile.',
@@ -496,10 +510,11 @@
       sub: 'On-site profile plus third-party certified lab testing, explained in plain English.',
       verdict: {
         status: 'action', score: 'B–',
-        head: 'Safe by regulation — trace lead and PFAS make RO the right call',
+        head: 'Safe by regulation, but trace lead and PFAS make RO the right call',
         body: 'Your water meets regulatory safety limits. However, certified lab testing detected trace lead and PFAS below action levels but above zero. For a household with young children, we recommend reverse osmosis to reduce these to the lowest achievable levels.',
         action: 'Reverse osmosis',
       },
+      savings: { bottledYear: '$1,080', setup: '$550', payback: '≈ 6 months', netYear: '$980' },
       glance: [
         { k: 'Overall', v: 'Fair', mono: false },
         { k: 'Primary concern', v: 'Trace lead + PFAS', mono: false },
@@ -507,9 +522,9 @@
         { k: 'Est. cost', v: '$450–$650', mono: true },
       ],
       metrics: [
-        { name: 'Total Dissolved Solids', note: 'TDS — overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Total Dissolved Solids', note: 'TDS · overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
         { name: 'Hardness', note: 'Calcium + magnesium', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
-        { name: 'Chloramine', note: 'Disinfectant — taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Chloramine', note: 'Disinfectant · taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
         { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
       ],
       lab: {
@@ -532,7 +547,7 @@
         desc: 'An RO system at the kitchen tap removes lead, PFAS, and most dissolved solids for drinking and cooking. A whole-home softener handles hardness and protects your plumbing.',
         list: [
           'Reduces lead and PFAS to near-undetectable levels',
-          'Removes ~95% of dissolved solids — cleaner taste',
+          'Removes ~95% of dissolved solids for cleaner taste',
           'Dedicated drinking-water tap at the sink',
           'Softener protects appliances from scale',
         ],
@@ -541,7 +556,7 @@
       },
       notes: [
         { icon: 'beaker', h: 'What “below action level” means', p: 'Your levels are legal and common, but for infants and young children we recommend minimizing lead and PFAS exposure wherever practical.' },
-        { icon: 'drop', h: 'Why RO over carbon', p: 'Standard carbon does not reliably remove lead or PFAS. Reverse osmosis does — which is why we recommend it based on your lab results.' },
+        { icon: 'drop', h: 'Why RO over carbon', p: 'Standard carbon does not reliably remove lead or PFAS. Reverse osmosis does, which is why we recommend it based on your lab results.' },
       ],
       steps: [
         '<b>Review results together.</b> We walk through the lab report and answer questions.',
@@ -656,6 +671,23 @@
           <div class="sec-head"><span class="sec-num">${num()}</span><span class="sec-title">Your water at a glance</span></div>
           <div class="glance">
             ${r.glance.map(g => `<div class="g-tile"><div class="k">${g.k}</div><div class="v ${g.mono ? 'mono' : ''}">${g.v}</div></div>`).join('')}
+          </div>
+        </div>
+        <div class="rule"></div>
+
+        <!-- Bottled-water savings -->
+        <div class="pad">
+          <div class="savings">
+            <div class="sv-main">
+              <div class="sv-label">Bottled-water savings</div>
+              <div class="sv-head">Stop paying for bottled water</div>
+              <p class="sv-body">Buying bottled water for a household runs about <b>${r.savings.bottledYear}/year</b>. Your recommended setup costs about <b>${r.savings.setup}</b> and pays for itself in <b>${r.savings.payback}</b>.</p>
+            </div>
+            <div class="sv-figure">
+              <div class="sv-k">Estimated savings</div>
+              <div class="sv-num">${r.savings.netYear}<span>/yr</span></div>
+              <div class="sv-pay">Pays for itself in ${r.savings.payback}</div>
+            </div>
           </div>
         </div>
         <div class="rule"></div>
