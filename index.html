@@ -347,6 +347,16 @@
       font-size: .84rem; color: var(--slate); line-height: 1.6;
     }
     .disc-box strong { color: var(--teal-dk); }
+    .check-note {
+      background: var(--teal); color: #fff;
+      border: 2px solid var(--ink); box-shadow: var(--hard-sm);
+      padding: 18px 20px; margin: 24px 0 4px;
+      font-size: .92rem; line-height: 1.55;
+    }
+    .check-note strong {
+      display: block; font-family: var(--disp); font-weight: 800;
+      font-size: 1rem; letter-spacing: -.01em; margin-bottom: 6px; color: #fff;
+    }
 
     /* Service card (right column) */
     .s-card {
@@ -737,6 +747,10 @@
           Renter-friendly
         </span>
         <span class="trust-item">
+          <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Same-day screening
+        </span>
+        <span class="trust-item">
           <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           No pressure
         </span>
@@ -851,9 +865,17 @@
         <div class="label"><span class="label-dot"></span>Main Offer</div>
         <h2 class="h2">Clean Water<br>Starter Kit</h2>
         <p class="body-text">
-          A simple in-home drinking-water check that helps you understand
-          your water and choose the right filter setup.
+          A same-day, in-home water check that tells you exactly what's in your
+          tap, in plain English. Sometimes a basic screening is all you need,
+          and even if your water is already good, now you'll know for sure.
         </p>
+
+        <div class="check-note">
+          <strong>You might not even need a filter, and that's a great answer.</strong>
+          A check is still worth it: peace of mind if you're breastfeeding or mixing
+          formula, answers on hard water, or finally knowing why your water tastes or
+          smells off. The report is the point, not a filter sale.
+        </div>
 
         <ul class="include-list">
           <li class="include-item"><span class="check-dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Short water-use survey</li>
@@ -879,7 +901,7 @@
       <div class="s-card">
         <div class="s-header">
           <div class="s-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5C12 2.5 5 10 5 15a7 7 0 0014 0C19 10 12 2.5 12 2.5z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5C12 2.5 5 10 5 15a7 7 0 0014 0C19 10 12 2.5 12 2.5z"/></svg>
           </div>
           <div>
             <div class="s-card-title">Sample Water Profile</div>
@@ -889,20 +911,20 @@
 
         <div class="s-metrics">
           <div>
-            <div class="sm-row"><span class="sm-lbl">TDS</span><span class="sm-val" style="color:#0EA5E9">310<span class="sm-unit">ppm</span></span></div>
-            <div class="sm-track"><div class="sm-fill" style="width:62%;background:#0EA5E9"></div></div>
+            <div class="sm-row"><span class="sm-lbl">TDS</span><span class="sm-val" style="color:#12B3A0">310<span class="sm-unit">ppm</span></span></div>
+            <div class="sm-track"><div class="sm-fill" style="width:62%;background:#12B3A0"></div></div>
           </div>
           <div>
-            <div class="sm-row"><span class="sm-lbl">pH</span><span class="sm-val" style="color:#38BDF8">7.6<span class="sm-unit">neutral</span></span></div>
-            <div class="sm-track"><div class="sm-fill" style="width:72%;background:#38BDF8"></div></div>
+            <div class="sm-row"><span class="sm-lbl">pH</span><span class="sm-val" style="color:#34D9C4">7.6<span class="sm-unit">neutral</span></span></div>
+            <div class="sm-track"><div class="sm-fill" style="width:72%;background:#34D9C4"></div></div>
           </div>
           <div>
-            <div class="sm-row"><span class="sm-lbl">Hardness</span><span class="sm-val" style="color:#F97316">185<span class="sm-unit">mg/L</span></span></div>
-            <div class="sm-track"><div class="sm-fill" style="width:80%;background:#F97316"></div></div>
+            <div class="sm-row"><span class="sm-lbl">Hardness</span><span class="sm-val" style="color:#E4572E">185<span class="sm-unit">mg/L</span></span></div>
+            <div class="sm-track"><div class="sm-fill" style="width:80%;background:#E4572E"></div></div>
           </div>
           <div>
-            <div class="sm-row"><span class="sm-lbl">Chlorine</span><span class="sm-val" style="color:#2DD4BF">0.4<span class="sm-unit">mg/L</span></span></div>
-            <div class="sm-track"><div class="sm-fill" style="width:30%;background:#2DD4BF"></div></div>
+            <div class="sm-row"><span class="sm-lbl">Chlorine</span><span class="sm-val" style="color:#34D9C4">0.4<span class="sm-unit">mg/L</span></span></div>
+            <div class="sm-track"><div class="sm-fill" style="width:30%;background:#34D9C4"></div></div>
           </div>
         </div>
 
