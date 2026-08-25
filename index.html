@@ -1147,29 +1147,31 @@
 
       <div class="form-card" id="form-card">
         <form id="tapiq-form" onsubmit="submitForm(event)">
+          <!-- lets Formspree label the notification email -->
+          <input type="hidden" name="_subject" value="New TapIQ water-check request" />
           <div class="form-grid">
-            <div class="fg"><label for="name">Your name</label><input type="text" id="name" placeholder="Jane Smith" required /></div>
-            <div class="fg"><label for="email">Email address</label><input type="email" id="email" placeholder="jane@email.com" required /></div>
-            <div class="fg"><label for="phone">Phone number</label><input type="tel" id="phone" placeholder="(619) 000-0000" /></div>
-            <div class="fg"><label for="city">City or neighborhood</label><input type="text" id="city" placeholder="e.g. North Park, Chula Vista" /></div>
+            <div class="fg"><label for="name">Your name</label><input type="text" id="name" name="name" placeholder="Jane Smith" required /></div>
+            <div class="fg"><label for="email">Email address</label><input type="email" id="email" name="email" placeholder="jane@email.com" required /></div>
+            <div class="fg"><label for="phone">Phone number</label><input type="tel" id="phone" name="phone" placeholder="(619) 000-0000" /></div>
+            <div class="fg"><label for="city">City or neighborhood</label><input type="text" id="city" name="city" placeholder="e.g. North Park, Chula Vista" /></div>
             <div class="fg">
               <label for="tenure">Rent or own?</label>
-              <select id="tenure"><option value="">Select one…</option><option>I rent</option><option>I own</option><option>Prefer not to say</option></select>
+              <select id="tenure" name="rent_or_own"><option value="">Select one…</option><option>I rent</option><option>I own</option><option>Prefer not to say</option></select>
             </div>
             <div class="fg">
               <label for="drinking">Current drinking water source</label>
-              <select id="drinking"><option value="">Select one…</option><option>Tap water</option><option>Bottled water</option><option>Brita / pitcher filter</option><option>Fridge filter</option><option>Under-sink filter</option><option>RO system</option><option>Mix of sources</option></select>
+              <select id="drinking" name="drinking_source"><option value="">Select one…</option><option>Tap water</option><option>Bottled water</option><option>Brita / pitcher filter</option><option>Fridge filter</option><option>Under-sink filter</option><option>RO system</option><option>Mix of sources</option></select>
             </div>
             <div class="fg">
               <label for="concern">Main water concern</label>
-              <select id="concern"><option value="">Select one…</option><option>Bad taste or smell</option><option>Buying too much bottled water</option><option>Lead, PFAS, or bacteria concerns</option><option>Old plumbing or pipes</option><option>Unsure if I need RO</option><option>Renting, unsure what I can install</option><option>General curiosity</option><option>Other</option></select>
+              <select id="concern" name="main_concern"><option value="">Select one…</option><option>Bad taste or smell</option><option>Buying too much bottled water</option><option>Lead, PFAS, or bacteria concerns</option><option>Old plumbing or pipes</option><option>Unsure if I need RO</option><option>Renting, unsure what I can install</option><option>General curiosity</option><option>Other</option></select>
             </div>
             <!-- UPDATE PACKAGE NAMES HERE IF PRICES CHANGE -->
             <div class="fg">
               <label for="package">Package interested in</label>
-              <select id="package"><option value="">Select one…</option><option>Starter Check ($49–$79)</option><option>Clean Water Starter Kit ($149)</option><option>Advanced Water Profile (Custom)</option><option>Not sure yet</option></select>
+              <select id="package" name="package_interest"><option value="">Select one…</option><option>Starter Check ($49–$79)</option><option>Clean Water Starter Kit ($149)</option><option>Advanced Water Profile (Custom)</option><option>Not sure yet</option></select>
             </div>
-            <div class="fg full"><label for="message">Anything else to know?</label><textarea id="message" placeholder="Your home type, building age, specific concerns…"></textarea></div>
+            <div class="fg full"><label for="message">Anything else to know?</label><textarea id="message" name="message" placeholder="Your home type, building age, specific concerns…"></textarea></div>
           </div>
           <button type="submit" class="btn btn-orange form-submit">Request My Water Check</button>
         </form>
@@ -1211,18 +1213,12 @@
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
-        <!-- UPDATE EMAIL AND PHONE HERE -->
+        <!-- UPDATE EMAIL HERE -->
         <ul>
           <li>
             <div class="contact-item">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               <a href="mailto:hello@tapiqwater.com">hello@tapiqwater.com</a>
-            </div>
-          </li>
-          <li>
-            <div class="contact-item">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.64A2 2 0 012 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-              <a href="tel:0000000000">(000) 000-0000</a>
             </div>
           </li>
         </ul>
@@ -1260,20 +1256,53 @@
     }
   }
 
-  /* Form submission */
-  function submitForm(e) {
+  /* ── Form submission ──────────────────────────────────────────────
+     Submissions POST to Formspree, which emails them to hello@tapiqwater.com.
+     SETUP: create a form at https://formspree.io (send-to: hello@tapiqwater.com),
+     copy its endpoint (looks like https://formspree.io/f/abcdwxyz), and paste
+     the code below between the quotes, replacing YOUR_FORM_ID.
+  ─────────────────────────────────────────────────────────────────── */
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mwledqol';
+
+  async function submitForm(e) {
     e.preventDefault();
+    const form = e.target;
+    const btn  = form.querySelector('.form-submit');
     const card = document.getElementById('form-card');
-    card.innerHTML = `
-      <div class="success-msg">
-        <div class="success-icon-wrap">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-        </div>
-        <h3>You're all set</h3>
-        <p>TapIQ received your request. We'll follow up soon to learn more about your water concerns.</p>
-      </div>`;
+
+    // Guard: remind us if the endpoint hasn't been set yet
+    if (FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID')) {
+      alert('Form endpoint not configured yet. Add your Formspree ID in the code (FORMSPREE_ENDPOINT).');
+      return;
+    }
+
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error('Request failed');
+
+      card.innerHTML = `
+        <div class="success-msg">
+          <div class="success-icon-wrap">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h3>You're all set</h3>
+          <p>TapIQ received your request. We'll follow up by email soon to learn more about your water concerns.</p>
+        </div>`;
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = original;
+      alert("Sorry — something went wrong sending your request. Please email hello@tapiqwater.com and we'll take it from there.");
+    }
   }
 
   /* ════════════════════════════════════════════════════════════════
