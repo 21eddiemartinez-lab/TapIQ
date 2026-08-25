@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TapIQ Water Analysis Report</title>
+  <link rel="icon" type="image/png" href="assets/tapiq-mark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@600;700;800;900&family=Archivo+Narrow:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -72,11 +73,7 @@
       margin-right: auto;
     }
     .demo-brand span { color: #34D9C4; }
-    .demo-mark {
-      width: 28px; height: 28px;
-      display: grid; place-items: center;
-      background: var(--sky); border: 2px solid #fff;
-    }
+    .demo-mark { width: 30px; height: 30px; object-fit: contain; display: block; }
     .demo-tag {
       font-family: var(--cond); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
       color: rgba(255,255,255,.5); align-self: center;
@@ -118,10 +115,7 @@
     }
     .mast * { color: var(--card); }
     .mast-logo { display: flex; align-items: center; gap: 12px; }
-    .mast-mark {
-      width: 42px; height: 42px; display: grid; place-items: center;
-      background: var(--sky); border: 2px solid var(--card);
-    }
+    .mast-mark { width: 48px; height: 48px; object-fit: contain; display: block; }
     .mast-name { font-family: var(--disp); font-size: 1.4rem; font-weight: 900; letter-spacing: -.02em; color: var(--card); }
     .mast-name span { color: #34D9C4; }
     .mast-kicker { font-size: .72rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; margin-top: 1px; }
@@ -362,9 +356,7 @@
 <div class="demo-bar">
   <div class="demo-inner">
     <div class="demo-brand">
-      <span class="demo-mark">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5C12 2.5 5 10 5 15a7 7 0 0014 0C19 10 12 2.5 12 2.5z"/><path d="M9 15a3 3 0 003 3"/></svg>
-      </span>
+      <img src="assets/tapiq-mark.png" alt="TapIQ" class="demo-mark" />
       Tap<span>IQ</span>
     </div>
     <span class="demo-tag">Example report</span>
@@ -619,7 +611,7 @@
         <!-- Masthead -->
         <div class="mast">
           <div class="mast-logo">
-            <span class="mast-mark">${ICONS.drop.replace('width="15" height="15"','width="22" height="22"').replace('stroke="currentColor"','stroke="#fff"')}</span>
+            <img src="assets/tapiq-mark.png" alt="TapIQ" class="mast-mark" />
             <div>
               <div class="mast-name">Tap<span>IQ</span></div>
               <div class="mast-kicker">Test your tap. Find your filter.</div>
