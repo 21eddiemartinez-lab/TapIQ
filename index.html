@@ -3,8 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TapIQ | Test your tap. Find your filter.</title>
+  <title>TapIQ — Water Screening &amp; Filter Guidance in San Diego</title>
+  <meta name="description" content="TapIQ gives San Diego homes a same-day tap-water screening and honest filter guidance — or tells you if you don't need one. Renter-friendly. No pressure." />
   <link rel="icon" type="image/png" href="assets/tapiq-mark.png" />
+  <!-- Social sharing (Open Graph + Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TapIQ" />
+  <meta property="og:title" content="TapIQ — Test your tap. Find your filter." />
+  <meta property="og:description" content="Same-day tap-water screening and honest filter guidance for San Diego homes." />
+  <meta property="og:url" content="https://tapiqwater.com/" />
+  <meta property="og:image" content="https://tapiqwater.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TapIQ — Test your tap. Find your filter." />
+  <meta name="twitter:description" content="Same-day tap-water screening and honest filter guidance for San Diego homes." />
+  <meta name="twitter:image" content="https://tapiqwater.com/assets/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@600;700;800;900&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -174,6 +188,15 @@
     .nav-links a:hover { color: var(--bone); }
     .nav.scrolled .nav-links a { color: var(--muted); }
     .nav.scrolled .nav-links a:hover { color: var(--ink); }
+    .nav-toggle {
+      display: none; /* desktop: hidden */
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: var(--bone);
+    }
+    .nav.scrolled .nav-toggle { color: var(--ink); }
+    .nav-toggle .ic-close { display: none; }
+    .nav.open .nav-toggle .ic-open { display: none; }
+    .nav.open .nav-toggle .ic-close { display: block; }
     .nav-btn { padding: 10px 18px; font-size: .82rem; box-shadow: var(--hard-sm); }
     .nav-btn:hover { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
     /* nav CTA needs a visible border on the dark hero */
@@ -716,7 +739,21 @@
       .founder-card   { max-width: 360px; }
       .form-layout    { grid-template-columns: 1fr; gap: 44px; }
       .footer-inner   { grid-template-columns: 1fr; gap: 32px; }
-      .nav-links      { display: none; }
+
+      /* ── Mobile menu ── */
+      .nav-toggle { display: grid; place-items: center; }
+      .nav-links {
+        display: none;
+        position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: var(--bone); border-bottom: 2px solid var(--ink);
+        box-shadow: var(--hard);
+      }
+      .nav.open .nav-links { display: flex; }
+      .nav-links a {
+        padding: 15px 28px; border-top: 2px solid var(--ink);
+        color: var(--ink) !important; font-size: 1rem;
+      }
     }
     @media (max-width: 560px) {
       .concern-grid { grid-template-columns: 1fr; }
@@ -746,6 +783,10 @@
       <a href="#faq">FAQ</a>
     </div>
     <a href="#contact" class="btn btn-primary nav-btn">Book Now</a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="toggleMenu(this)">
+      <svg class="ic-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="ic-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -1325,6 +1366,21 @@
   window.addEventListener('scroll', () => {
     document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
+
+  /* Mobile menu */
+  function toggleMenu(btn) {
+    const nav = document.getElementById('main-nav');
+    const open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  // close the menu after tapping a link
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      const nav = document.getElementById('main-nav');
+      nav.classList.remove('open');
+      nav.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
+    });
+  });
 
   /* FAQ accordion */
   function toggleFaq(btn) {
