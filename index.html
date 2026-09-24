@@ -791,7 +791,7 @@
      ╚══════════════════════════════════════════════════════════════╝ -->
 <section class="hero" id="home">
   <canvas id="globe" role="img"
-    aria-label="A slowly rotating globe of dots; points across the world light up green as people are connected to clean water"></canvas>
+    aria-label="Concentric water ripples expanding across the hero background"></canvas>
   <div class="hero-scrim"></div>
   <div class="wrap" style="position:relative;z-index:2;width:100%;">
 
@@ -1461,247 +1461,70 @@
   }
 
   /* ════════════════════════════════════════════════════════════════
-     CONNECTED-WATER GLOBE
-     A rotating dotted sphere. People-nodes scattered on the surface.
-     Arcs travel between them and the nodes light up green, as if
-     each connection delivers clean-water information to a person.
+     WATER RIPPLES — hero ambient motion
+     Concentric rings expand and fade from a few drop points, in flat
+     brand-blue strokes. Calm, water-native, no gradients or glow.
   ════════════════════════════════════════════════════════════════ */
   (function () {
     const canvas = document.getElementById('globe');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const BLUE = '20,104,216';    // brand blue
+    const BRIGHT = '59,155,245';  // bright blue
 
-    // Palette (Bold Utilitarian: muted dots, bright-teal connections)
-    const SKY   = [126, 130, 122];  // base / unconnected (warm gray)
-    const GREEN = [59, 155, 245];  // connected (brand blue)
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // drop points as fractions of the canvas box
+    const drops = [
+      { x: 0.44, y: 0.50, period: 4400, rings: 5, phase: 0 },
+      { x: 0.66, y: 0.28, period: 5400, rings: 4, phase: 1500 },
+      { x: 0.60, y: 0.76, period: 5000, rings: 4, phase: 2800 },
+    ];
 
-    let W, H, R, cx, cy, dpr;
+    let W, H, dpr, maxR;
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const css = canvas.getBoundingClientRect();
-      W = css.width; H = css.height;
-      canvas.width  = W * dpr;
-      canvas.height = H * dpr;
+      const r = canvas.getBoundingClientRect();
+      W = r.width; H = r.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cx = W / 2; cy = H / 2;
-      R = Math.min(W, H) * 0.42;
+      maxR = Math.max(W, H) * 0.7;
     }
 
-    // Latitude/longitude graticule — dots laid on parallels so the
-    // sphere reads clearly as a globe (even surface density).
-    function graticule() {
-      const pts = [];
-      const latStep = 6;          // degrees between parallels
-      for (let lat = -84; lat <= 84; lat += latStep) {
-        const latR = lat * Math.PI / 180;
-        const ring = Math.cos(latR);
-        // dots per ring scale with circumference → even spacing
-        const count = Math.max(6, Math.round(64 * ring));
-        for (let j = 0; j < count; j++) {
-          const lon = (j / count) * 2 * Math.PI;
-          pts.push([
-            ring * Math.cos(lon),
-            Math.sin(latR),
-            ring * Math.sin(lon),
-          ]);
-        }
-      }
-      // poles
-      pts.push([0, 1, 0], [0, -1, 0]);
-      return pts;
+    function ring(ox, oy, rad, alpha, bright) {
+      if (alpha <= 0.008) return;
+      ctx.strokeStyle = 'rgba(' + (bright ? BRIGHT : BLUE) + ',' + alpha + ')';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(ox, oy, rad, 0, Math.PI * 2); ctx.stroke();
     }
 
-    const dots  = graticule();
-    const TILT  = -0.38; // fixed X tilt so we see a little of the top
-
-    // People-nodes: a subset of surface points
-    const NODE_COUNT = 16;
-    const nodes = [];
-    for (let i = 0; i < NODE_COUNT; i++) {
-      const u = Math.random(), v = Math.random();
-      const theta = 2 * Math.PI * u;
-      const phi = Math.acos(2 * v - 1);
-      nodes.push({
-        p: [Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta)],
-        connected: 0,   // current colour, eases toward target
-        target: 0,      // 0 = sky, 1 = green
-      });
-    }
-
-    // Cycle state machine: connect everyone -> hold -> fade back -> repeat
-    let phase = 'connecting';   // 'connecting' | 'holding' | 'resetting'
-    let phaseTimer = 0;
-
-    // Active connections (arcs)
-    const arcs = [];
-    function slerp(a, b, t) {
-      let dot = a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
-      dot = Math.max(-1, Math.min(1, dot));
-      const om = Math.acos(dot);
-      if (om < 1e-4) return a;
-      const s = Math.sin(om);
-      const k0 = Math.sin((1 - t) * om) / s, k1 = Math.sin(t * om) / s;
-      return [a[0]*k0 + b[0]*k1, a[1]*k0 + b[1]*k1, a[2]*k0 + b[2]*k1];
-    }
-    function spawnArc() {
-      const a = nodes[(Math.random() * nodes.length) | 0];
-      const b = nodes[(Math.random() * nodes.length) | 0];
-      if (a === b) return;
-      arcs.push({ a, b, t: 0, speed: 0.006 + Math.random() * 0.006, done: false });
-    }
-    let arcTimer = 0;
-
-    function rot(p, ay) {
-      // rotate around Y, then tilt around X
-      const cosY = Math.cos(ay), sinY = Math.sin(ay);
-      let x = p[0] * cosY - p[2] * sinY;
-      let z = p[0] * sinY + p[2] * cosY;
-      let y = p[1];
-      const cosX = Math.cos(TILT), sinX = Math.sin(TILT);
-      const y2 = y * cosX - z * sinX;
-      const z2 = y * sinX + z * cosX;
-      return [x, y2, z2];
-    }
-    function project(p) {
-      return [cx + p[0] * R, cy - p[1] * R, p[2]]; // z: -1 back .. 1 front
-    }
-    function lerpColor(c1, c2, t) {
-      return [
-        Math.round(c1[0] + (c2[0] - c1[0]) * t),
-        Math.round(c1[1] + (c2[1] - c1[1]) * t),
-        Math.round(c1[2] + (c2[2] - c1[2]) * t),
-      ];
-    }
-
-    let angle = 0, last = performance.now();
+    const start = performance.now();
     function frame(now) {
-      const dt = Math.min(now - last, 50); last = now;
-      if (!reduceMotion) angle += dt * 0.00018;
-
+      const t = now - start;
       ctx.clearRect(0, 0, W, H);
-
-      // Dotted graticule surface. Far-side dots are kept but very faint,
-      // so the globe reads as a translucent sphere with real depth.
-      for (const d of dots) {
-        const r = rot(d, angle);
-        const pr = project(r);
-        const depth = (r[2] + 1) / 2;            // 0 back .. 1 front
-        let alpha, size;
-        if (r[2] >= 0) {                          // front hemisphere
-          alpha = 0.16 + depth * 0.5;
-          size  = 0.8 + depth * 1.25;
-        } else {                                  // back hemisphere (through the globe)
-          alpha = 0.05 + depth * 0.06;
-          size  = 0.7;
+      for (const d of drops) {
+        const ox = d.x * W, oy = d.y * H;
+        for (let i = 0; i < d.rings; i++) {
+          const cycle = (((t + d.phase) / d.period) + i / d.rings) % 1;
+          ring(ox, oy, cycle * maxR, (1 - cycle) * 0.42, i === 0);
         }
-        ctx.fillStyle = `rgba(${SKY[0]},${SKY[1]},${SKY[2]},${alpha})`;
-        ctx.beginPath(); ctx.arc(pr[0], pr[1], size, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(' + BRIGHT + ',0.85)';
+        ctx.fillRect(ox - 3, oy - 3, 6, 6); // flat drop point
       }
-
-      // ── Cycle state machine ──────────────────────────────────
-      if (reduceMotion) {
-        // static: everyone already connected
-        nodes.forEach(n => { n.connected = n.target = 1; });
-      } else {
-        const allOn  = nodes.every(n => n.target === 1);
-        const allOff = nodes.every(n => n.connected < 0.02);
-        phaseTimer += dt;
-
-        if (phase === 'connecting') {
-          arcTimer += dt;
-          if (arcTimer > 520 && arcs.length < 6) { arcTimer = 0; spawnArc(); }
-          // nudge any still-unconnected node so the cycle always completes
-          if (phaseTimer > 1400) {
-            phaseTimer = 0;
-            const pending = nodes.filter(n => n.target < 1);
-            if (pending.length) pending[(Math.random()*pending.length)|0].target = 1;
-          }
-          if (allOn) { phase = 'holding'; phaseTimer = 0; }
-        } else if (phase === 'holding') {
-          if (phaseTimer > 1600) { phase = 'resetting'; phaseTimer = 0; arcs.length = 0; nodes.forEach(n => n.target = 0); }
-        } else if (phase === 'resetting') {
-          if (allOff) { phase = 'connecting'; phaseTimer = 0; }
-        }
-      }
-
-      // Ease every node toward its target (fast to connect, slow to reset)
-      for (const n of nodes) {
-        const rate = n.target > n.connected ? 0.010 : 0.0016;
-        n.connected += (n.target - n.connected) * Math.min(1, dt * rate);
-        if (Math.abs(n.target - n.connected) < 0.004) n.connected = n.target;
-      }
-
-      for (let i = arcs.length - 1; i >= 0; i--) {
-        const arc = arcs[i];
-        if (!reduceMotion) arc.t += arc.speed;
-        const tEnd = Math.min(arc.t, 1);
-
-        // sample great-circle, lifted above surface
-        const SAMP = 26;
-        let prev = null;
-        ctx.lineWidth = 2;
-        for (let s = 0; s <= SAMP; s++) {
-          const f = (s / SAMP) * tEnd;
-          const sp = slerp(arc.a.p, arc.b.p, f);
-          const lift = 1 + 0.22 * Math.sin(Math.PI * (s / SAMP)); // arc bow
-          const r = rot([sp[0]*lift, sp[1]*lift, sp[2]*lift], angle);
-          const pr = project(r);
-          if (prev) {
-            const depth = (r[2] + 1) / 2;
-            const col = lerpColor(SKY, GREEN, f); // sky → green along the path
-            const a = (r[2] < -0.1 ? 0.08 : 0.25 + depth * 0.6);
-            ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},${a})`;
-            ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(pr[0], pr[1]); ctx.stroke();
-          }
-          prev = pr;
-        }
-
-        // travelling pulse head
-        if (arc.t < 1) {
-          const sp = slerp(arc.a.p, arc.b.p, tEnd);
-          const lift = 1 + 0.22 * Math.sin(Math.PI * tEnd);
-          const r = rot([sp[0]*lift, sp[1]*lift, sp[2]*lift], angle);
-          if (r[2] >= -0.1) {
-            const pr = project(r);
-            ctx.fillStyle = `rgba(${GREEN[0]},${GREEN[1]},${GREEN[2]},1)`;
-            ctx.fillRect(pr[0]-2.5, pr[1]-2.5, 5, 5); // flat square pulse head
-          }
-        } else if (!arc.done) {
-          arc.done = true;
-          arc.a.target = 1;
-          arc.b.target = 1;           // both endpoints now connected
-        }
-        // retire old completed arcs so the path keeps cycling
-        if (arc.done && (arc._age = (arc._age || 0) + dt) > 2600) arcs.splice(i, 1);
-      }
-
-      // Nodes (people) drawn last, on top
-      for (const n of nodes) {
-        const r = rot(n.p, angle);
-        if (r[2] < -0.1) continue;
-        const pr = project(r);
-        const depth = (r[2] + 1) / 2;
-        const col = lerpColor(SKY, GREEN, n.connected);
-        const baseA = 0.45 + depth * 0.5;
-        // connected people get a hollow ring (flat, no glow)
-        if (n.connected > 0.5) {
-          ctx.strokeStyle = `rgba(${GREEN[0]},${GREEN[1]},${GREEN[2]},${0.5 * depth})`;
-          ctx.lineWidth = 1.5;
-          ctx.beginPath(); ctx.arc(pr[0], pr[1], 6 + depth * 2, 0, Math.PI * 2); ctx.stroke();
-        }
-        // flat square node marker
-        const sz = 3 + depth * 2 + (n.connected > 0.5 ? 1 : 0);
-        ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${baseA})`;
-        ctx.fillRect(pr[0]-sz/2, pr[1]-sz/2, sz, sz);
-      }
-
       requestAnimationFrame(frame);
     }
 
+    function still() {
+      ctx.clearRect(0, 0, W, H);
+      for (const d of drops) {
+        const ox = d.x * W, oy = d.y * H;
+        for (let i = 1; i <= 4; i++) ring(ox, oy, (i / 5) * maxR, 0.34 - i * 0.06, i === 1);
+        ctx.fillStyle = 'rgba(' + BRIGHT + ',0.85)'; ctx.fillRect(ox - 3, oy - 3, 6, 6);
+      }
+    }
+
     resize();
-    window.addEventListener('resize', resize);
-    requestAnimationFrame(frame);
+    window.addEventListener('resize', function () { resize(); if (reduce) still(); });
+    reduce ? still() : requestAnimationFrame(frame);
   })();
 </script>
 
