@@ -1475,10 +1475,20 @@
 
     // drop points as fractions of the canvas box
     const drops = [
-      { x: 0.44, y: 0.50, period: 4400, rings: 5, phase: 0 },
-      { x: 0.66, y: 0.28, period: 5400, rings: 4, phase: 1500 },
-      { x: 0.60, y: 0.76, period: 5000, rings: 4, phase: 2800 },
+      { x: 0.44, y: 0.50, period: 7200, rings: 5, phase: 0 },
+      { x: 0.66, y: 0.28, period: 8600, rings: 4, phase: 2400 },
+      { x: 0.60, y: 0.76, period: 8000, rings: 4, phase: 4400 },
     ];
+
+    // small water-droplet marker (tip up)
+    function drawDrop(x, y, s) {
+      ctx.beginPath();
+      ctx.moveTo(x, y - s);
+      ctx.bezierCurveTo(x + s, y - s * 0.1, x + s * 0.62, y + s, x, y + s);
+      ctx.bezierCurveTo(x - s * 0.62, y + s, x - s, y - s * 0.1, x, y - s);
+      ctx.closePath();
+      ctx.fill();
+    }
 
     let W, H, dpr, maxR;
     function resize() {
@@ -1507,8 +1517,8 @@
           const cycle = (((t + d.phase) / d.period) + i / d.rings) % 1;
           ring(ox, oy, cycle * maxR, (1 - cycle) * 0.42, i === 0);
         }
-        ctx.fillStyle = 'rgba(' + BRIGHT + ',0.85)';
-        ctx.fillRect(ox - 3, oy - 3, 6, 6); // flat drop point
+        ctx.fillStyle = 'rgba(' + BRIGHT + ',0.9)';
+        drawDrop(ox, oy, 7);
       }
       requestAnimationFrame(frame);
     }
@@ -1518,7 +1528,7 @@
       for (const d of drops) {
         const ox = d.x * W, oy = d.y * H;
         for (let i = 1; i <= 4; i++) ring(ox, oy, (i / 5) * maxR, 0.34 - i * 0.06, i === 1);
-        ctx.fillStyle = 'rgba(' + BRIGHT + ',0.85)'; ctx.fillRect(ox - 3, oy - 3, 6, 6);
+        ctx.fillStyle = 'rgba(' + BRIGHT + ',0.9)'; drawDrop(ox, oy, 7);
       }
     }
 
