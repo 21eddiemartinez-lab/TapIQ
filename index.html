@@ -1409,8 +1409,10 @@
   ─────────────────────────────────────────────────────────────────── */
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mwledqol';
 
+  let formSubmitting = false; // in-flight guard: blocks duplicate submissions
   async function submitForm(e) {
     e.preventDefault();
+    if (formSubmitting) return; // ignore rapid double-clicks / repeat Enter
     const form = e.target;
     const btn  = form.querySelector('.form-submit');
     const card = document.getElementById('form-card');
@@ -1421,16 +1423,23 @@
       return;
     }
 
+    formSubmitting = true;
     btn.disabled = true;
     const original = btn.textContent;
     btn.textContent = 'Sending…';
+
+    // Abort the request if the network hangs (10s timeout)
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
 
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: new FormData(form),
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
       if (!res.ok) throw new Error('Request failed');
 
       card.innerHTML = `
@@ -1444,9 +1453,14 @@
           <p>TapIQ received your request. We'll follow up by email soon to learn more about your water concerns.</p>
         </div>`;
     } catch (err) {
+      clearTimeout(timeout);
+      formSubmitting = false;
       btn.disabled = false;
       btn.textContent = original;
-      alert("Sorry — something went wrong sending your request. Please email hello@tapiqwater.com and we'll take it from there.");
+      const msg = err.name === 'AbortError'
+        ? "The request timed out. Please check your connection and try again, or email hello@tapiqwater.com."
+        : "Sorry, something went wrong sending your request. Please email hello@tapiqwater.com and we'll take it from there.";
+      alert(msg);
     }
   }
 
