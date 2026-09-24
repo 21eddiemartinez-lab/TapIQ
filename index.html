@@ -544,14 +544,10 @@
       background: var(--bone); border: 2px solid var(--bone);
       box-shadow: 8px 8px 0 var(--teal); padding: 38px 32px; text-align: center;
     }
-    .founder-portrait {
-      width: 130px; height: 130px; margin: 0 auto 22px;
-      background: var(--teal); color: #fff; border: 2px solid var(--ink);
-      display: grid; place-items: center;
-      font-family: var(--disp); font-weight: 900; font-size: 3rem; letter-spacing: -.02em;
-      overflow: hidden;
+    .founder-logo {
+      width: 104px; height: 104px; margin: 0 auto 22px;
+      object-fit: contain; display: block;
     }
-    .founder-portrait img { width: 100%; height: 100%; object-fit: cover; }
     .founder-name { font-family: var(--disp); font-weight: 900; font-size: 1.5rem; color: var(--ink); letter-spacing: -.02em; }
     .founder-role {
       font-family: var(--cond); text-transform: uppercase; letter-spacing: .09em;
@@ -1167,25 +1163,25 @@
 <section class="section section--dark" id="founder">
   <div class="wrap founder-grid">
 
-    <!-- Swap the monogram for a photo: <img src="assets/founder.jpg" alt="Eduardo Martinez" /> inside .founder-portrait -->
     <div class="founder-card">
-      <div class="founder-portrait">EM</div>
-      <div class="founder-name">Eduardo Martinez</div>
-      <div class="founder-role">Founder &amp; Water Scientist</div>
+      <img src="assets/tapiq-mark.png" alt="TapIQ" class="founder-logo" />
+      <div class="founder-name">The TapIQ Team</div>
+      <div class="founder-role">Local Water Scientists &middot; San Diego</div>
     </div>
 
     <div class="founder-body">
-      <div class="label label--light"><span class="label-dot"></span>Who's behind TapIQ</div>
-      <h2 class="h2 h2--light">A water scientist who believes everyone deserves to know what's in their water.</h2>
+      <div class="label label--light"><span class="label-dot"></span>Who we are</div>
+      <h2 class="h2 h2--light">A team of local water scientists, dedicated to cleaner water for everyone.</h2>
       <p class="body-text body-text--light">
-        TapIQ was founded by Eduardo Martinez, a water scientist with 6+ years of experience and
-        hands-on work in water treatment around the world. After seeing how often families overpay
-        for bottled water or the wrong filter, simply because no one gave them a straight answer,
-        he built TapIQ to bring honest, science-backed water screening to San Diego homes.
+        TapIQ is a team of San Diego water scientists with hands-on experience in water treatment
+        around the world. We started TapIQ after seeing how often families overpay for bottled water
+        or the wrong filter, simply because no one gave them a straight answer. Our mission is simple:
+        honest, science-backed water screening so every home can access cleaner water, and the
+        information to understand it.
       </p>
 
       <div class="founder-stats">
-        <div class="fstat"><div class="fstat-n">6+</div><div class="fstat-l">Years as a water scientist</div></div>
+        <div class="fstat"><div class="fstat-n">6+</div><div class="fstat-l">Years of water-science experience</div></div>
         <div class="fstat"><div class="fstat-n">Global</div><div class="fstat-l">Water-treatment experience</div></div>
         <div class="fstat"><div class="fstat-n">Local</div><div class="fstat-l">Focused on San Diego access</div></div>
       </div>
@@ -1708,5 +1704,14 @@
     requestAnimationFrame(frame);
   })();
 </script>
+
+<!-- ── Analytics: Cloudflare Web Analytics (privacy-first, no cookies, no consent banner) ──
+     SETUP (2 min): sign in at https://dash.cloudflare.com → Analytics & Logs → Web Analytics
+     → "Add a site" → enter tapiqwater.com. It gives you a snippet with a "token".
+     Paste that token below in place of YOUR_TOKEN, then delete the two comment markers
+     (the "<!--" above the script and the "-->" below it) to activate. Do the same on report.html. -->
+<!--
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_TOKEN"}'></script>
+-->
 </body>
 </html>

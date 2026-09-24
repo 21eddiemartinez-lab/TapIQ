@@ -783,5 +783,10 @@
   const wanted = new URLSearchParams(location.search).get('tier');
   render(REPORTS[wanted] ? wanted : 'kit');
 </script>
+
+<!-- Analytics: paste your Cloudflare Web Analytics token below and uncomment (see index.html for setup steps) -->
+<!--
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_TOKEN"}'></script>
+-->
 </body>
 </html>
