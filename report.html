@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TapIQ Water Analysis Report — Example</title>
+  <title>TapIQ Water Analysis Report &mdash; Example</title>
   <meta name="description" content="An example TapIQ water analysis report: your water at a glance, on-site measurements, bottled-water savings, and a plain-English recommendation." />
   <link rel="icon" type="image/png" href="assets/tapiq-mark.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="TapIQ" />
   <meta property="og:title" content="TapIQ Water Analysis Report" />
-  <meta property="og:description" content="See exactly what a TapIQ water analysis report looks like — the deliverable you receive." />
+  <meta property="og:description" content="See exactly what a TapIQ water analysis report looks like &mdash; the deliverable you receive." />
   <meta property="og:url" content="https://tapiqwater.com/report.html" />
   <meta property="og:image" content="https://tapiqwater.com/assets/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -18,346 +18,161 @@
   <meta name="twitter:image" content="https://tapiqwater.com/assets/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@600;700;800;900&family=Archivo+Narrow:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     /* ═══════════════════════════════════════════════════════════════
-       TapIQ — Water Analysis Report (example deliverable)
-       Deliberate single "paper" theme: a document, not an app.
-       Type: Plus Jakarta Sans (text) + IBM Plex Mono (measured data)
+       TapIQ — Water Analysis Report (clean professional)
+       DM Sans + IBM Plex Mono (lab data) | navy/blue/cyan | rounded
     ═══════════════════════════════════════════════════════════════ */
-    :root {
-      /* Bold Utilitarian — ink on bone, deep teal, flat status colors */
-      --ink:      #101010;
-      --ink-soft: #2E2E2A;
-      --muted:    #6A685E;
-      --faint:    #96938A;
-      --line:     #101010;   /* hard borders */
-      --line-2:   #D8D6CC;   /* soft dividers */
-      --paper-bg: #DAD8CC;   /* page ground behind the doc */
-      --card:     #FCFBF7;
-      --wash:     #EEECE2;   /* inset panels */
+    :root{
+      --navy:#0B2440; --ink:#0F2438; --blue:#1668D8; --blue-dk:#0E4FA8; --cyan:#16B6CE;
+      --coral:#F2704A;
+      --bg:#EEF3F8; --card:#FFFFFF; --wash:#F4F8FC; --line:#E4EBF3;
+      --slate:#3C566E; --muted:#6B7E92; --faint:#9AAAB9;
+      --good:#118A41; --good-bg:#E3F5EA; --watch:#B26A00; --watch-bg:#FBF0DA; --action:#C62A2A; --action-bg:#FBE4E4;
+      --f:'DM Sans',system-ui,-apple-system,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+      --r-sm:10px; --r:14px; --r-lg:18px; --r-xl:24px;
+      --sh:0 6px 22px rgba(11,36,64,.08); --sh-lg:0 16px 44px rgba(11,36,64,.12);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--f);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:60px;}
+    .mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
 
-      --sky:      #1668D8;   /* brand blue (from logo) */
-      --sky-dk:   #0E4FA8;
-      --navy:     #101010;   /* dark panels */
-      --orange:   #E4572E;
+    .demo-bar{position:sticky;top:0;z-index:50;background:var(--navy);}
+    .demo-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:13px 24px;flex-wrap:wrap;}
+    .demo-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.05rem;color:#fff;margin-right:auto;}
+    .demo-brand span{color:var(--cyan);}
+    .demo-mark{width:30px;height:30px;object-fit:contain;display:block;}
+    .demo-tag{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);align-self:center;}
+    .tabs{display:flex;gap:5px;background:rgba(255,255,255,.08);padding:5px;border-radius:99px;}
+    .tab{cursor:pointer;font-family:var(--f);font-size:.8rem;font-weight:600;color:rgba(255,255,255,.7);background:none;border:none;padding:8px 15px;border-radius:99px;transition:all .15s;white-space:nowrap;}
+    .tab:hover{color:#fff;} .tab.active{background:var(--blue);color:#fff;}
+    .print-btn{display:inline-flex;align-items:center;gap:7px;border:none;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-family:var(--f);font-size:.8rem;font-weight:600;padding:9px 15px;border-radius:99px;transition:background .15s;}
+    .print-btn:hover{background:rgba(255,255,255,.2);}
 
-      /* semantic status — flat, high-contrast */
-      --good:     #0F7A3D;  --good-bg:  #DDF3E3;  --good-line:#0F7A3D;
-      --watch:    #A65A0B;  --watch-bg: #FBEBCF;  --watch-line:#A65A0B;
-      --action:   #B4231C;  --action-bg:#F8DCDA;  --action-line:#B4231C;
+    .doc{max-width:900px;margin:32px auto;background:var(--card);border-radius:var(--r-xl);box-shadow:var(--sh-lg);overflow:hidden;animation:rise .5s cubic-bezier(.2,.7,.3,1) both;}
+    @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
 
-      --f:    'Archivo', system-ui, -apple-system, sans-serif;
-      --disp: 'Archivo Expanded', 'Archivo', system-ui, sans-serif;
-      --cond: 'Archivo Narrow', 'Archivo', system-ui, sans-serif;
-      --mono: 'IBM Plex Mono', ui-monospace, monospace;
-      --r: 0; --r-sm: 0;
-      --sh: 6px 6px 0 var(--ink);
-    }
+    .mast{display:flex;justify-content:space-between;align-items:flex-start;padding:34px 44px 30px;background:var(--navy);}
+    .mast *{color:#fff;}
+    .mast-logo{display:flex;align-items:center;gap:12px;}
+    .mast-mark{width:44px;height:44px;object-fit:contain;display:block;}
+    .mast-name{font-weight:800;font-size:1.4rem;letter-spacing:-.01em;}
+    .mast-name span{color:var(--cyan);}
+    .mast-kicker{font-size:.75rem;color:rgba(255,255,255,.55);margin-top:2px;}
+    .mast-meta{text-align:right;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.7;}
+    .mast-meta b{color:#fff;font-weight:700;}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--f);
-      background: var(--paper-bg);
-      color: var(--ink);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: 60px;
-    }
-    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .pad{padding:32px 44px;}
+    .rule{height:1px;background:var(--line);margin:0 44px;}
 
-    /* ── Demo control bar (not part of the printed report) ─────────── */
-    .demo-bar {
-      position: sticky; top: 0; z-index: 50;
-      background: var(--ink);
-      border-bottom: 2px solid #3B9BF5;
-    }
-    .demo-inner {
-      max-width: 900px; margin: 0 auto;
-      display: flex; align-items: center; gap: 14px;
-      padding: 12px 24px; flex-wrap: wrap;
-    }
-    .demo-brand {
-      display: flex; align-items: center; gap: 10px;
-      font-family: var(--disp); font-weight: 900; font-size: 1.05rem; color: #fff; letter-spacing: -.02em;
-      margin-right: auto;
-    }
-    .demo-brand span { color: #3B9BF5; }
-    .demo-mark { width: 30px; height: 30px; object-fit: contain; display: block; }
-    .demo-tag {
-      font-family: var(--cond); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-      color: rgba(255,255,255,.5); align-self: center;
-    }
-    .tabs { display: flex; gap: 6px; }
-    .tab {
-      cursor: pointer; font-family: var(--cond);
-      font-size: .8rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
-      color: rgba(255,255,255,.7); background: transparent;
-      border: 2px solid rgba(255,255,255,.3);
-      padding: 7px 13px; transition: all .12s; white-space: nowrap;
-    }
-    .tab:hover { color: #fff; border-color: #fff; }
-    .tab.active { background: var(--sky); color: #fff; border-color: #fff; }
-    .print-btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      border: 2px solid #fff; background: transparent;
-      color: #fff; cursor: pointer; font-family: var(--cond);
-      font-size: .8rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
-      padding: 7px 13px; transition: background .12s, color .12s;
-    }
-    .print-btn:hover { background: #fff; color: var(--ink); }
+    .titleblock{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;}
+    .doc-title{font-weight:800;font-size:1.8rem;letter-spacing:-.02em;line-height:1.06;color:var(--ink);}
+    .doc-sub{color:var(--muted);font-size:.92rem;margin-top:6px;}
+    .tier-badge{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;padding:8px 15px;border-radius:99px;background:#E7F0FB;color:var(--blue-dk);white-space:nowrap;}
+    .tier-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);}
 
-    /* ── Document shell ───────────────────────────────────────────── */
-    .doc {
-      max-width: 900px; margin: 40px auto; background: var(--card);
-      border: 2px solid var(--ink); box-shadow: var(--sh);
-      overflow: hidden;
-      animation: rise .5s cubic-bezier(.2,.7,.3,1) both;
-    }
-    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    .meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px;}
+    .meta-cell{background:var(--wash);border-radius:var(--r);padding:15px 16px;}
+    .meta-cell .k{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);}
+    .meta-cell .v{font-size:.9rem;font-weight:600;color:var(--ink);margin-top:4px;}
 
-    /* Masthead */
-    .mast {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 32px 40px 26px;
-      border-bottom: 2px solid var(--ink);
-      background: var(--ink);
-    }
-    .mast * { color: var(--card); }
-    .mast-logo { display: flex; align-items: center; gap: 12px; }
-    .mast-mark { width: 48px; height: 48px; object-fit: contain; display: block; }
-    .mast-name { font-family: var(--disp); font-size: 1.4rem; font-weight: 900; letter-spacing: -.02em; color: var(--card); }
-    .mast-name span { color: #3B9BF5; }
-    .mast-kicker { font-size: .72rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; margin-top: 1px; }
-    .mast-meta { text-align: right; font-size: .78rem; color: var(--muted); line-height: 1.7; }
-    .mast-meta b { color: var(--ink); font-weight: 700; }
+    .verdict{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:26px 28px;border-radius:var(--r-lg);}
+    .verdict.good{background:var(--good-bg);} .verdict.watch{background:var(--watch-bg);} .verdict.action{background:var(--action-bg);}
+    .v-score{width:84px;height:84px;border-radius:20px;display:grid;place-items:center;background:#fff;box-shadow:var(--sh);flex-shrink:0;text-align:center;}
+    .v-score .num{font-weight:800;font-size:2rem;line-height:1;} .v-score .of{font-size:.6rem;color:var(--muted);font-weight:700;letter-spacing:.06em;margin-top:3px;}
+    .verdict.good .v-score .num{color:var(--good);} .verdict.watch .v-score .num{color:var(--watch);} .verdict.action .v-score .num{color:var(--action);}
+    .v-head{font-weight:800;font-size:1.15rem;letter-spacing:-.01em;margin-bottom:6px;color:var(--ink);line-height:1.2;}
+    .v-body{font-size:.92rem;color:var(--slate);max-width:52ch;}
+    .v-action{text-align:right;flex-shrink:0;}
+    .v-action .lbl{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+    .v-action .pill{display:inline-block;font-weight:700;font-size:.88rem;color:#fff;background:var(--ink);padding:9px 16px;border-radius:99px;}
 
-    .pad { padding: 30px 44px; }
-    .rule { height: 1px; background: var(--line-2); margin: 4px 44px; }
+    .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .sec-num{font-family:var(--mono);font-size:.74rem;font-weight:600;color:#fff;background:var(--blue);border-radius:8px;padding:4px 9px;}
+    .sec-title{font-weight:800;font-size:1.12rem;letter-spacing:-.01em;color:var(--ink);}
+    .sec-desc{font-size:.86rem;color:var(--muted);margin:-8px 0 20px;}
 
-    /* Title block */
-    .titleblock { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-    .doc-title { font-family: var(--disp); font-size: 1.8rem; font-weight: 900; letter-spacing: -.02em; line-height: 1.02; text-wrap: balance; }
-    .doc-sub { color: var(--muted); font-size: .9rem; margin-top: 6px; }
-    .tier-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--cond); font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-      padding: 7px 14px; border: 2px solid var(--ink);
-      background: var(--ink); color: #fff; white-space: nowrap;
-    }
-    .tier-badge .dot { width: 7px; height: 7px; background: #3B9BF5; }
+    .glance{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+    .g-tile{background:var(--wash);border-radius:var(--r);padding:18px;}
+    .g-tile .k{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);}
+    .g-tile .v{font-weight:800;font-size:1.05rem;margin-top:6px;color:var(--ink);} .g-tile .v.mono{font-family:var(--mono);font-size:1.15rem;}
 
-    /* Customer meta grid */
-    .meta-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
-      background: var(--ink); border: 2px solid var(--ink);
-      overflow: hidden; margin-top: 24px;
-    }
-    .meta-cell { background: var(--card); padding: 14px 16px; }
-    .meta-cell .k { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
-    .meta-cell .v { font-size: .9rem; font-weight: 600; color: var(--ink); margin-top: 3px; }
+    .savings{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;background:linear-gradient(160deg,var(--blue),var(--blue-dk));color:#fff;border-radius:var(--r-lg);padding:28px 32px;box-shadow:var(--sh);}
+    .sv-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:8px;}
+    .sv-head{font-weight:800;font-size:1.35rem;line-height:1.1;margin-bottom:10px;}
+    .sv-body{font-size:.92rem;color:rgba(255,255,255,.9);max-width:48ch;line-height:1.5;} .sv-body b{color:#fff;}
+    .sv-figure{text-align:right;flex-shrink:0;}
+    .sv-k{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.75);}
+    .sv-num{font-weight:800;font-size:2.6rem;line-height:1;margin:4px 0 10px;} .sv-num span{font-size:1rem;font-weight:600;color:rgba(255,255,255,.75);}
+    .sv-pay{display:inline-block;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;background:rgba(255,255,255,.16);color:#fff;padding:6px 13px;border-radius:99px;}
 
-    /* Verdict banner */
-    .verdict {
-      display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
-      padding: 24px 26px 24px 30px; position: relative; overflow: hidden;
-      border: 2px solid var(--ink);
-    }
-    .verdict::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; }
-    .verdict.good::before   { background: var(--good); }
-    .verdict.watch::before  { background: var(--watch); }
-    .verdict.action::before { background: var(--action); }
-    .verdict.good   { background: var(--good-bg); }
-    .verdict.watch  { background: var(--watch-bg); }
-    .verdict.action { background: var(--action-bg); }
-    .v-score {
-      width: 92px; height: 92px; display: grid; place-items: center;
-      background: var(--card); border: 2px solid var(--ink); box-shadow: var(--sh) ; flex-shrink: 0; text-align: center;
-    }
-    .v-score .num { font-family: var(--disp); font-size: 2rem; font-weight: 900; line-height: 1; }
-    .v-score .of  { font-family: var(--cond); font-size: .6rem; color: var(--muted); font-weight: 700; letter-spacing: .08em; margin-top: 3px; }
-    .verdict.good   .v-score .num { color: var(--good); }
-    .verdict.watch  .v-score .num { color: var(--watch); }
-    .verdict.action .v-score .num { color: var(--action); }
-    .v-head { font-family: var(--disp); font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; line-height: 1.15; color: var(--ink); }
-    .v-body { font-size: .9rem; color: var(--ink-soft); max-width: 52ch; }
-    .v-action { text-align: right; flex-shrink: 0; }
-    .v-action .lbl { font-family: var(--cond); font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
-    .v-action .pill {
-      display: inline-block; font-weight: 800; font-size: .88rem; color: #fff;
-      background: var(--ink); border: 2px solid var(--ink); padding: 8px 14px;
-    }
+    .m-row{display:grid;grid-template-columns:1.6fr 1fr 2fr auto;gap:18px;align-items:center;padding:16px 0;border-top:1px solid var(--line);}
+    .m-row:first-of-type{border-top:none;}
+    .m-name{font-weight:700;font-size:.94rem;color:var(--ink);} .m-name small{display:block;font-weight:400;font-size:.76rem;color:var(--muted);margin-top:1px;}
+    .m-val{font-family:var(--mono);font-weight:600;font-size:1rem;color:var(--ink);} .m-val .u{font-size:.72rem;color:var(--muted);margin-left:2px;}
+    .m-bar-wrap{display:flex;flex-direction:column;gap:6px;}
+    .m-track{height:8px;border-radius:99px;background:var(--line);position:relative;overflow:hidden;}
+    .m-fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;}
+    .m-fill.good{background:var(--good);} .m-fill.watch{background:var(--watch);} .m-fill.action{background:var(--action);}
+    .m-range{display:flex;justify-content:space-between;font-size:.7rem;color:var(--faint);font-family:var(--mono);}
+    .pill{display:inline-flex;align-items:center;gap:6px;justify-self:end;font-size:.74rem;font-weight:700;padding:6px 12px;border-radius:99px;white-space:nowrap;}
+    .pill.good{color:var(--good);background:var(--good-bg);} .pill.watch{color:var(--watch);background:var(--watch-bg);} .pill.action{color:var(--action);background:var(--action-bg);}
+    .pill .pdot{width:7px;height:7px;border-radius:50%;background:currentColor;}
 
-    /* Section heading */
-    .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-    .sec-num {
-      font-family: var(--mono); font-size: .74rem; font-weight: 600; color: #fff; background: var(--ink);
-      border: 2px solid var(--ink); padding: 3px 8px;
-    }
-    .sec-title { font-family: var(--disp); font-size: 1.05rem; font-weight: 800; letter-spacing: -.01em; }
-    .sec-desc { font-size: .82rem; color: var(--muted); margin: -10px 0 20px; }
+    .labwrap{overflow-x:auto;border-radius:var(--r);box-shadow:0 0 0 1px var(--line);}
+    table.lab{width:100%;border-collapse:collapse;font-size:.86rem;min-width:520px;}
+    table.lab thead th{text-align:left;font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:13px 16px;background:var(--wash);}
+    table.lab thead th.r,table.lab td.r{text-align:right;}
+    table.lab td{padding:13px 16px;border-top:1px solid var(--line);color:var(--slate);}
+    table.lab td.name{font-weight:700;color:var(--ink);} table.lab td.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+    .lab-note{display:flex;gap:10px;align-items:flex-start;font-size:.86rem;color:var(--slate);background:#E7F0FB;border-radius:var(--r);padding:15px 18px;margin-top:16px;line-height:1.55;}
+    .lab-note svg{flex-shrink:0;color:var(--blue);margin-top:1px;}
 
-    /* Glance tiles */
-    .glance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .g-tile { background: var(--wash); border: 2px solid var(--ink); padding: 16px; }
-    .g-tile .k { font-family: var(--cond); font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
-    .g-tile .v { font-family: var(--disp); font-size: 1rem; font-weight: 800; margin-top: 7px; letter-spacing: -.01em; }
-    .g-tile .v.mono { font-family: var(--mono); font-size: 1.15rem; }
+    .reco{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 0 0 1px var(--line);}
+    .reco-main{padding:28px 30px;background:#fff;}
+    .reco-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:9px;}
+    .reco-title{font-weight:800;font-size:1.3rem;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink);line-height:1.15;}
+    .reco-desc{font-size:.9rem;color:var(--slate);margin-bottom:18px;line-height:1.55;}
+    .reco-list{display:flex;flex-direction:column;gap:10px;}
+    .reco-list li{list-style:none;display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--slate);}
+    .reco-check{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:#E7F0FB;color:var(--blue);display:grid;place-items:center;}
+    .reco-side{background:linear-gradient(160deg,var(--navy),#091a30);color:#fff;padding:28px 30px;display:flex;flex-direction:column;justify-content:center;gap:18px;}
+    .reco-side .k{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);}
+    .reco-cost{font-weight:800;font-size:2rem;line-height:1;} .reco-cost small{font-size:.8rem;font-weight:500;color:rgba(255,255,255,.6);}
+    .reco-credit{font-size:.82rem;color:#fff;background:rgba(22,182,206,.16);border-radius:var(--r-sm);padding:12px 14px;line-height:1.45;} .reco-credit b{color:var(--cyan);}
 
-    /* Bottled-water savings band */
-    .savings {
-      display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
-      background: var(--sky); color: #fff; border: 2px solid var(--ink);
-      box-shadow: var(--sh); padding: 26px 30px;
-    }
-    .sv-label { font-family: var(--cond); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 8px; }
-    .sv-head { font-family: var(--disp); font-size: 1.35rem; font-weight: 900; letter-spacing: -.01em; line-height: 1.05; margin-bottom: 10px; }
-    .sv-body { font-size: .9rem; color: rgba(255,255,255,.9); max-width: 48ch; line-height: 1.5; }
-    .sv-body b { color: #fff; background: rgba(0,0,0,.22); padding: 0 4px; }
-    .sv-figure { text-align: right; flex-shrink: 0; border-left: 2px solid rgba(255,255,255,.35); padding-left: 28px; }
-    .sv-k { font-family: var(--cond); font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.7); }
-    .sv-num { font-family: var(--disp); font-size: 2.7rem; font-weight: 900; line-height: 1; margin: 4px 0 8px; font-variant-numeric: tabular-nums; }
-    .sv-num span { font-family: var(--f); font-size: 1rem; font-weight: 600; color: rgba(255,255,255,.75); }
-    .sv-pay { display: inline-block; font-family: var(--cond); font-size: .74rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; background: var(--ink); color: #fff; border: 2px solid var(--ink); padding: 4px 10px; }
+    .notes{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .note{background:var(--wash);border-radius:var(--r);padding:18px 20px;}
+    .note h4{font-weight:700;font-size:.95rem;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+    .note h4 .ic{color:var(--blue);display:inline-grid;} .note p{font-size:.84rem;color:var(--muted);line-height:1.55;}
 
-    /* Measurement rows */
-    .m-row {
-      display: grid; grid-template-columns: 1.6fr 1fr 2fr auto; gap: 18px; align-items: center;
-      padding: 15px 0; border-top: 1px solid var(--line-2);
-    }
-    .m-row:first-of-type { border-top: none; }
-    .m-name { font-weight: 700; font-size: .92rem; }
-    .m-name small { display: block; font-weight: 500; font-size: .74rem; color: var(--muted); margin-top: 1px; }
-    .m-val { font-family: var(--mono); font-weight: 600; font-size: 1rem; }
-    .m-val .u { font-size: .72rem; color: var(--muted); margin-left: 2px; }
-    .m-bar-wrap { display: flex; flex-direction: column; gap: 5px; }
-    .m-track { height: 10px; background: var(--card); border: 2px solid var(--ink); position: relative; overflow: hidden; }
-    .m-fill { position: absolute; left: 0; top: 0; bottom: 0; }
-    .m-fill.good   { background: var(--good); }
-    .m-fill.watch  { background: var(--watch); }
-    .m-fill.action { background: var(--action); }
-    .m-range { display: flex; justify-content: space-between; font-size: .68rem; color: var(--faint); font-family: var(--mono); }
-    .pill {
-      display: inline-flex; align-items: center; gap: 5px; justify-self: end;
-      font-family: var(--cond); font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
-      padding: 4px 10px; white-space: nowrap; border: 2px solid var(--ink);
-    }
-    .pill.good   { color: var(--good);   background: var(--good-bg); }
-    .pill.watch  { color: var(--watch);  background: var(--watch-bg); }
-    .pill.action { color: var(--action); background: var(--action-bg); }
-    .pill .pdot { width: 7px; height: 7px; background: currentColor; }
+    .steps{counter-reset:s;display:flex;flex-direction:column;gap:14px;}
+    .step{display:flex;gap:14px;align-items:flex-start;}
+    .step .n{counter-increment:s;flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:.85rem;display:grid;place-items:center;}
+    .step .n::before{content:counter(s);}
+    .step .t{font-size:.9rem;color:var(--slate);padding-top:4px;} .step .t b{color:var(--ink);}
 
-    /* Lab table */
-    .labwrap { overflow-x: auto; border: 2px solid var(--ink); }
-    table.lab { width: 100%; border-collapse: collapse; font-size: .84rem; min-width: 520px; }
-    table.lab thead th {
-      text-align: left; font-family: var(--cond); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-      color: #fff; padding: 11px 16px; background: var(--ink); border-bottom: 2px solid var(--ink);
-    }
-    table.lab thead th.r, table.lab td.r { text-align: right; }
-    table.lab td { padding: 12px 16px; border-bottom: 1px solid var(--line-2); }
-    table.lab tbody tr:last-child td { border-bottom: none; }
-    table.lab td.name { font-weight: 700; }
-    table.lab td.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .disc{font-size:.8rem;color:var(--muted);line-height:1.6;background:var(--wash);border-radius:var(--r);padding:18px 20px;} .disc b{color:var(--ink);}
+    .doc-foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:24px 44px;background:var(--navy);font-size:.82rem;}
+    .doc-foot,.doc-foot *{color:rgba(255,255,255,.6);} .doc-foot a{color:var(--cyan);font-weight:600;}
+    .doc-foot .contact{display:flex;gap:18px;flex-wrap:wrap;}
 
-    .lab-note {
-      display: flex; gap: 10px; align-items: flex-start;
-      font-size: .8rem; color: var(--ink-soft); background: var(--wash);
-      border: 2px solid var(--ink); border-left: 6px solid var(--sky);
-      padding: 13px 16px; margin-top: 16px;
+    @media (max-width:760px){
+      .pad{padding:24px 22px;} .mast{padding:26px 22px 22px;} .rule{margin:0 22px;} .doc-foot{padding:22px 22px;}
+      .meta-grid{grid-template-columns:1fr 1fr;} .glance{grid-template-columns:1fr 1fr;}
+      .verdict{grid-template-columns:1fr;text-align:left;} .v-action{text-align:left;}
+      .savings{grid-template-columns:1fr;gap:18px;} .sv-figure{text-align:left;}
+      .reco{grid-template-columns:1fr;} .notes{grid-template-columns:1fr;}
+      .m-row{grid-template-columns:1fr auto;grid-template-areas:"name pill" "val val" "bar bar";gap:8px 12px;}
+      .m-name{grid-area:name;} .pill{grid-area:pill;} .m-val{grid-area:val;} .m-bar-wrap{grid-area:bar;}
+      .doc-title{font-size:1.5rem;}
     }
-    .lab-note svg { flex-shrink: 0; color: var(--sky); margin-top: 1px; }
-
-    /* Recommendation */
-    .reco {
-      display: grid; grid-template-columns: 1.3fr 1fr; gap: 0;
-      border: 2px solid var(--ink); overflow: hidden;
-    }
-    .reco-main { padding: 26px 28px; }
-    .reco-eyebrow { font-family: var(--cond); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 9px; }
-    .reco-title { font-family: var(--disp); font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 8px; line-height: 1.1; }
-    .reco-desc { font-size: .88rem; color: var(--ink-soft); margin-bottom: 18px; }
-    .reco-list { display: flex; flex-direction: column; gap: 9px; }
-    .reco-list li { list-style: none; display: flex; gap: 10px; align-items: flex-start; font-size: .86rem; color: var(--ink-soft); }
-    .reco-check {
-      width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
-      background: var(--sky); color: #fff; border: 2px solid var(--ink); display: grid; place-items: center;
-    }
-    .reco-side {
-      background: var(--ink); color: #fff; padding: 26px 28px;
-      display: flex; flex-direction: column; justify-content: center; gap: 18px;
-      position: relative; overflow: hidden; border-left: 2px solid var(--ink);
-    }
-    .reco-side .k { font-family: var(--cond); font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.55); position: relative; }
-    .reco-cost { font-family: var(--disp); font-size: 2rem; font-weight: 900; letter-spacing: -.01em; line-height: 1; position: relative; }
-    .reco-cost small { font-family: var(--f); font-size: .8rem; font-weight: 500; color: rgba(255,255,255,.6); }
-    .reco-credit {
-      position: relative; font-size: .82rem; color: #fff;
-      background: rgba(0,122,108,.25); border: 2px solid var(--sky);
-      padding: 11px 13px; line-height: 1.45;
-    }
-    .reco-credit b { color: #3B9BF5; }
-
-    /* Plain-English notes */
-    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .note { background: var(--wash); border: 2px solid var(--ink); padding: 16px 18px; }
-    .note h4 { font-family: var(--disp); font-size: .9rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-    .note h4 .ic { color: var(--sky); display: inline-grid; }
-    .note p { font-size: .83rem; color: var(--ink-soft); }
-
-    /* Next steps */
-    .steps { counter-reset: s; display: flex; flex-direction: column; gap: 12px; }
-    .step { display: flex; gap: 14px; align-items: flex-start; }
-    .step .n {
-      counter-increment: s; flex-shrink: 0;
-      width: 30px; height: 30px; background: var(--sky); color: #fff; border: 2px solid var(--ink);
-      font-family: var(--disp); font-weight: 800; font-size: .85rem; display: grid; place-items: center;
-    }
-    .step .n::before { content: counter(s); }
-    .step .t { font-size: .89rem; color: var(--ink-soft); padding-top: 4px; }
-    .step .t b { color: var(--ink); }
-
-    /* Disclaimer + footer */
-    .disc {
-      font-size: .78rem; color: var(--muted); line-height: 1.6;
-      background: var(--wash); border: 2px solid var(--ink); border-left: 6px solid var(--sky); padding: 16px 18px;
-    }
-    .disc b { color: var(--ink); }
-    .doc-foot {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-      padding: 22px 40px; border-top: 2px solid var(--ink); background: var(--ink);
-      font-family: var(--cond); font-size: .82rem; color: rgba(255,255,255,.55);
-    }
-    .doc-foot .contact { display: flex; gap: 18px; flex-wrap: wrap; }
-    .doc-foot, .doc-foot * { color: rgba(255,255,255,.6); }
-    .doc-foot a { color: #3B9BF5; font-weight: 600; }
-
-    /* Responsive */
-    @media (max-width: 760px) {
-      .pad { padding: 24px 22px; }
-      .mast { padding: 24px 22px 20px; }
-      .rule { margin: 4px 22px; }
-      .doc-foot { padding: 20px 22px; }
-      .meta-grid { grid-template-columns: 1fr 1fr; }
-      .glance { grid-template-columns: 1fr 1fr; }
-      .verdict { grid-template-columns: 1fr; text-align: left; }
-      .v-action { text-align: left; }
-      .savings { grid-template-columns: 1fr; gap: 18px; }
-      .sv-figure { text-align: left; border-left: none; padding-left: 0; border-top: 2px solid rgba(255,255,255,.35); padding-top: 16px; }
-      .reco { grid-template-columns: 1fr; }
-      .notes { grid-template-columns: 1fr; }
-      .m-row { grid-template-columns: 1fr auto; grid-template-areas: "name pill" "val val" "bar bar"; gap: 8px 12px; }
-      .m-name { grid-area: name; } .pill { grid-area: pill; } .m-val { grid-area: val; } .m-bar-wrap { grid-area: bar; }
-      .doc-title { font-size: 1.5rem; }
-    }
-
-    /* Print */
-    @media print {
-      body { background: #fff; padding: 0; }
-      .demo-bar { display: none; }
-      .doc { box-shadow: none; margin: 0; max-width: none; border: none; animation: none; }
-      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @media print{
+      body{background:#fff;padding:0;} .demo-bar{display:none;}
+      .doc{box-shadow:none;margin:0;max-width:none;border-radius:0;animation:none;}
+      *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     }
   </style>
 </head>
@@ -383,7 +198,7 @@
 
 <script>
   /* ════════════════════════════════════════════════════════════════
-     REPORT DATA — one object per package tier.
+     REPORT DATA &mdash; one object per package tier.
      Edit values / copy here; the template below renders them.
   ════════════════════════════════════════════════════════════════ */
   const CUSTOMER = {
@@ -404,7 +219,7 @@
   const REPORTS = {
     starter: {
       tab: 'Starter Check',
-      tier: 'Starter Check · $49–$79',
+      tier: 'Starter Check &middot; $49&ndash;$79',
       id: 'TIQ-2026-0148',
       date: 'Aug 24, 2026',
       title: 'Water Analysis Report',
@@ -415,16 +230,16 @@
         body: 'Your tap water meets safe-to-drink screening on the basics. The chloramine used for disinfection is affecting taste and odor, and your water is quite hard, which leaves scale on fixtures and appliances.',
         action: 'Carbon filtration',
       },
-      savings: { bottledYear: '$1,080', setup: '$150', payback: '≈ 7 weeks', netYear: '$1,020' },
+      savings: { bottledYear: '$1,080', setup: '$150', payback: '&asymp; 7 weeks', netYear: '$1,020' },
       glance: [
-        { k: 'Overall', v: 'Good · Fair', mono: false },
+        { k: 'Overall', v: 'Good &middot; Fair', mono: false },
         { k: 'Primary concern', v: 'Taste + hardness', mono: false },
         { k: 'Recommended', v: 'Carbon filter', mono: false },
-        { k: 'Est. cost', v: '$120–$180', mono: true },
+        { k: 'Est. cost', v: '$120&ndash;$180', mono: true },
       ],
       metrics: [
-        { name: 'Chloramine', note: 'Disinfectant · taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
-        { name: 'Total Dissolved Solids', note: 'TDS · overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Chloramine', note: 'Disinfectant &middot; taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Total Dissolved Solids', note: 'TDS &middot; overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
         { name: 'Hardness', note: 'Calcium + magnesium', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
         { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
       ],
@@ -438,10 +253,10 @@
           'No plumbing changes for countertop models',
           'Filter swaps roughly every 6 months',
         ],
-        cost: '$120–$180', costNote: 'installed', credit: null,
+        cost: '$120&ndash;$180', costNote: 'installed', credit: null,
       },
       notes: [
-        { icon: 'drop', h: 'Why it tastes “like a pool”', p: 'San Diego uses chloramine to keep water safe in the pipes. It is safe to drink but carbon filtration removes the taste easily.' },
+        { icon: 'drop', h: 'Why it tastes &ldquo;like a pool&rdquo;', p: 'San Diego uses chloramine to keep water safe in the pipes. It is safe to drink but carbon filtration removes the taste easily.' },
         { icon: 'home', h: 'About the hardness', p: 'Hard water is not a health risk, but it causes spotting and scale. A softener is optional and can be added later.' },
       ],
       steps: [
@@ -453,7 +268,7 @@
 
     kit: {
       tab: 'Clean Water Starter Kit',
-      tier: 'Clean Water Starter Kit · $149',
+      tier: 'Clean Water Starter Kit &middot; $149',
       id: 'TIQ-2026-0149',
       date: 'Aug 24, 2026',
       title: 'Water Analysis Report',
@@ -464,7 +279,7 @@
         body: 'Your full on-site profile confirms safe-to-drink water with two clear issues: chloramine affecting taste, and hard water leaving scale. A carbon block handles the taste; a softener protects your plumbing and appliances.',
         action: 'Carbon + softening',
       },
-      savings: { bottledYear: '$1,080', setup: '$220', payback: '≈ 2.5 months', netYear: '$1,010' },
+      savings: { bottledYear: '$1,080', setup: '$220', payback: '&asymp; 2.5 months', netYear: '$1,010' },
       glance: [
         { k: 'Overall', v: 'Good', mono: false },
         { k: 'Primary concern', v: 'Hardness + taste', mono: false },
@@ -472,9 +287,9 @@
         { k: 'Est. cost', v: '$220+', mono: true },
       ],
       metrics: [
-        { name: 'Chloramine', note: 'Disinfectant · taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
-        { name: 'Total Dissolved Solids', note: 'TDS · overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
-        { name: 'Hardness', note: 'Calcium + magnesium (≈15 gpg)', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
+        { name: 'Chloramine', note: 'Disinfectant &middot; taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Total Dissolved Solids', note: 'TDS &middot; overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Hardness', note: 'Calcium + magnesium (&asymp;15 gpg)', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
         { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
         { name: 'Alkalinity', note: 'Buffering capacity', val: '118', unit: 'mg/L', lo: '80', hi: '120', fill: 62, status: 'good', label: 'Balanced' },
         { name: 'Iron', note: 'Staining / metallic taste', val: '0.03', unit: 'mg/L', lo: '0', hi: '0.3', fill: 12, status: 'good', label: 'Very low' },
@@ -506,28 +321,28 @@
 
     advanced: {
       tab: 'Advanced Water Profile',
-      tier: 'Advanced Water Profile · Custom',
+      tier: 'Advanced Water Profile &middot; Custom',
       id: 'TIQ-2026-0150',
       date: 'Aug 24, 2026',
       title: 'Advanced Water Analysis Report',
       sub: 'On-site profile plus third-party certified lab testing, explained in plain English.',
       verdict: {
-        status: 'action', score: 'B–',
+        status: 'action', score: 'B&ndash;',
         head: 'Safe by regulation, but trace lead and PFAS make RO the right call',
         body: 'Your water meets regulatory safety limits. However, certified lab testing detected trace lead and PFAS below action levels but above zero. For a household with young children, we recommend reverse osmosis to reduce these to the lowest achievable levels.',
         action: 'Reverse osmosis',
       },
-      savings: { bottledYear: '$1,080', setup: '$550', payback: '≈ 6 months', netYear: '$980' },
+      savings: { bottledYear: '$1,080', setup: '$550', payback: '&asymp; 6 months', netYear: '$980' },
       glance: [
         { k: 'Overall', v: 'Fair', mono: false },
         { k: 'Primary concern', v: 'Trace lead + PFAS', mono: false },
         { k: 'Recommended', v: 'Under-sink RO', mono: false },
-        { k: 'Est. cost', v: '$450–$650', mono: true },
+        { k: 'Est. cost', v: '$450&ndash;$650', mono: true },
       ],
       metrics: [
-        { name: 'Total Dissolved Solids', note: 'TDS · overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
+        { name: 'Total Dissolved Solids', note: 'TDS &middot; overall mineral content', val: '560', unit: 'ppm', lo: '0', hi: '500', fill: 72, status: 'watch', label: 'Elevated' },
         { name: 'Hardness', note: 'Calcium + magnesium', val: '255', unit: 'mg/L', lo: '0', hi: '120', fill: 84, status: 'action', label: 'Very hard' },
-        { name: 'Chloramine', note: 'Disinfectant · taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
+        { name: 'Chloramine', note: 'Disinfectant &middot; taste & odor', val: '2.6', unit: 'mg/L', lo: '0', hi: '4.0', fill: 65, status: 'watch', label: 'Noticeable' },
         { name: 'pH', note: 'Acidity / alkalinity', val: '8.1', unit: '', lo: '6.5', hi: '8.5', fill: 78, status: 'good', label: 'Normal' },
       ],
       lab: {
@@ -542,7 +357,7 @@
           { name: 'Copper', result: '0.12', unit: 'mg/L', limit: '1.3 mg/L', method: 'EPA 200.8', status: 'good', label: 'Low' },
           { name: 'Total Coliform', result: 'Absent', unit: '', limit: 'Absent', method: 'SM 9223B', status: 'good', label: 'None found' },
         ],
-        note: 'Lead and PFAS below action levels are not a regulatory violation, but there is no known “safe” threshold for lead. Reverse osmosis reliably reduces both to near-undetectable levels.',
+        note: 'Lead and PFAS below action levels are not a regulatory violation, but there is no known &ldquo;safe&rdquo; threshold for lead. Reverse osmosis reliably reduces both to near-undetectable levels.',
       },
       reco: {
         eyebrow: 'Recommended setup',
@@ -554,11 +369,11 @@
           'Dedicated drinking-water tap at the sink',
           'Softener protects appliances from scale',
         ],
-        cost: '$450–$650', costNote: 'RO installed; softener quoted separately',
+        cost: '$450&ndash;$650', costNote: 'RO installed; softener quoted separately',
         credit: 'Your <b>Starter Kit credit</b> applies toward the RO install.',
       },
       notes: [
-        { icon: 'beaker', h: 'What “below action level” means', p: 'Your levels are legal and common, but for infants and young children we recommend minimizing lead and PFAS exposure wherever practical.' },
+        { icon: 'beaker', h: 'What &ldquo;below action level&rdquo; means', p: 'Your levels are legal and common, but for infants and young children we recommend minimizing lead and PFAS exposure wherever practical.' },
         { icon: 'drop', h: 'Why RO over carbon', p: 'Standard carbon does not reliably remove lead or PFAS. Reverse osmosis does, which is why we recommend it based on your lab results.' },
       ],
       steps: [
@@ -577,7 +392,7 @@
         <div class="m-val">${m.val}<span class="u">${m.unit}</span></div>
         <div class="m-bar-wrap">
           <div class="m-track"><div class="m-fill ${m.status}" style="width:${m.fill}%"></div></div>
-          <div class="m-range"><span>${m.lo}</span><span>typical ≤ ${m.hi}</span></div>
+          <div class="m-range"><span>${m.lo}</span><span>typical &le; ${m.hi}</span></div>
         </div>
         <span class="pill ${m.status}"><span class="pdot"></span>${m.label}</span>
       </div>`;
@@ -762,7 +577,7 @@
             <span>hello@tapiqwater.com</span>
             <span>tapiqwater.com</span>
           </div>
-          <div>© 2026 TapIQ · Serving San Diego County</div>
+          <div>&copy; 2026 TapIQ &middot; Serving San Diego County</div>
         </div>
       </article>`;
 
