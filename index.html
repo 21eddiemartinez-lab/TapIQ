@@ -60,7 +60,7 @@
     a{text-decoration:none;color:inherit;} ul{list-style:none;} em{font-style:normal;color:var(--blue);}
 
     .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
-    .section{padding:100px 0;}
+    .section{padding:76px 0;}
     .section--alt{background:var(--bg);}
     .section--dark{background:var(--navy);}
     .center{text-align:center;} .center .body-text{margin-left:auto;margin-right:auto;}
@@ -105,7 +105,7 @@
     .nav-toggle .ic-close{display:none;} .nav.open .nav-toggle .ic-open{display:none;} .nav.open .nav-toggle .ic-close{display:block;}
 
     /* HERO */
-    .hero{min-height:100vh;background:var(--ink);display:flex;align-items:center;padding:150px 0 100px;position:relative;overflow:hidden;}
+    .hero{min-height:86vh;background:var(--ink);display:flex;align-items:center;padding:130px 0 70px;position:relative;overflow:hidden;}
     #globe{position:absolute;top:50%;right:-8%;width:900px;height:900px;max-width:60vw;transform:translateY(-50%);z-index:0;pointer-events:none;}
     .hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,var(--ink) 0%,var(--ink) 24%,rgba(15,36,56,.7) 48%,rgba(15,36,56,.1) 72%,transparent 84%);}
     .hero-content{position:relative;z-index:2;max-width:660px;}
@@ -120,7 +120,7 @@
     .trust-item svg{color:var(--cyan);}
 
     /* PROBLEM — separate soft cards */
-    .problem-head{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:end;margin-bottom:52px;}
+    .problem-head{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:end;margin-bottom:34px;}
     .concern-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
     .concern-card{background:var(--card);padding:30px 28px;border-radius:var(--r-lg);box-shadow:var(--sh);transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden;}
     .concern-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);}
@@ -172,7 +172,7 @@
     .s-reco p{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.55;}
 
     /* PACKAGES */
-    .pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;align-items:stretch;}
+    .pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;align-items:stretch;}
     .pkg-card{background:#fff;border-radius:var(--r-xl);padding:34px 30px;display:flex;flex-direction:column;box-shadow:var(--sh);transition:transform .18s,box-shadow .18s;}
     .pkg-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg);}
     .pkg-card.featured{background:var(--navy);box-shadow:0 20px 50px rgba(11,36,64,.35);transform:scale(1.03);}
@@ -195,7 +195,7 @@
     .pkg-sample:hover{color:var(--blue);} .pkg-card.featured .pkg-sample{color:rgba(255,255,255,.75);} .pkg-card.featured .pkg-sample:hover{color:#fff;}
 
     /* HOW IT WORKS */
-    .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:56px;}
+    .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px;}
     .step{background:#fff;padding:32px 26px;border-radius:var(--r-lg);box-shadow:var(--sh);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s;}
     .step:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);}
     .step-ghost{position:absolute;top:20px;right:24px;font-weight:800;font-size:2.4rem;color:var(--bg-2);line-height:1;}
@@ -204,7 +204,7 @@
     .step-connector{display:none;}
 
     /* WHY */
-    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px;}
+    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px;}
     .why-item{background:#fff;padding:28px 26px;border-radius:var(--r-lg);box-shadow:var(--sh);display:flex;gap:16px;align-items:flex-start;transition:transform .18s,box-shadow .18s;}
     .why-item:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);}
     .why-icon{width:46px;height:46px;border-radius:14px;flex-shrink:0;background:var(--teal-wash);color:var(--blue);display:grid;place-items:center;}
@@ -269,7 +269,7 @@
       .hero-scrim{background:linear-gradient(180deg,rgba(15,36,56,.4) 0%,rgba(15,36,56,.12) 45%,transparent 72%);}
     }
     @media (max-width:900px){
-      .section{padding:76px 0;}
+      .section{padding:56px 0;}
       .nav-toggle{display:grid;place-items:center;}
       .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:#fff;box-shadow:var(--sh-lg);border-radius:0 0 var(--r) var(--r);}
       .nav.open .nav-links{display:flex;} .nav-links a{padding:15px 28px;border-top:1px solid var(--line);color:var(--ink) !important;font-size:1rem;}
@@ -444,7 +444,7 @@
      ╚══════════════════════════════════════════════════════════════╝ -->
 <section class="section section--dark" id="calculator">
   <div class="wrap">
-    <div class="center" style="margin-bottom:44px">
+    <div class="center" style="margin-bottom:34px">
       <div class="label label--light"><span class="label-dot"></span>Bottled-water calculator</div>
       <h2 class="h2 h2--light">What are you <em>really</em> spending on bottled water?</h2>
       <p class="body-text body-text--light center">Slide to your household's habit. It usually adds up to more than a filter setup costs, and that's before you even know if you need one.</p>
@@ -705,7 +705,7 @@
      ╚══════════════════════════════════════════════════════════════╝ -->
 <section class="section section--alt">
   <div class="wrap">
-    <div class="center" style="margin-bottom:56px">
+    <div class="center" style="margin-bottom:38px">
       <div class="label"><span class="label-dot"></span>Why TapIQ</div>
       <h2 class="h2">No pressure. No confusing reports.<br>Just a clear path to better water.</h2>
     </div>
